@@ -17,6 +17,16 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
+      name: 'slug',
+      type: 'text',
+      label: 'URL (slug)',
+      required: true,
+      unique: true,
+      admin: {
+        description: 'Латиницей, через дефис: forbsa-tt',
+      },
+    },
+    {
       name: 'type',
       type: 'select',
       label: 'Тип',

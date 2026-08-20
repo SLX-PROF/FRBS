@@ -1,3 +1,5 @@
+import LeadForm from '@/components/LeadForm'
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-graphite text-white flex flex-col">
@@ -37,6 +39,12 @@ export default function Home() {
           >
             Документация
           </a>
+        </div>
+      </section>
+            <section id="contact" className="bg-graphite px-8 py-16 text-white">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-8 text-4xl font-extrabold">Обсудим ваш проект?</h2>
+          <LeadForm />
         </div>
       </section>
     </main>
