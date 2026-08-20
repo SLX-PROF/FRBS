@@ -2,6 +2,8 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import { getAllProducts } from '@/lib/products'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Каталог — FORBSA',
   description:

@@ -4,6 +4,8 @@ import Footer from '@/components/Footer'
 import DownloadButton from '@/components/DownloadButton'
 import { getAllDocuments } from '@/lib/documents'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Документация — FORBSA',
   description:

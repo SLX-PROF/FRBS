@@ -29,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ru">
-      <body className={`${manrope.variable} ${golos.variable} antialiased`}>
+    <html lang="ru" suppressHydrationWarning>
+      <body className={`${manrope.variable} ${golos.variable} antialiased`} suppressHydrationWarning>
         <Metrika />
         {children}
       </body>
