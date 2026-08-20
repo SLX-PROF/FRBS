@@ -5,14 +5,15 @@ import { NextResponse } from 'next/server'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, phone, email, clientType, comment, website } = body
+    const {
+      name, phone, email, clientType, comment, website,
+      company, city, businessType, volume,
+    } = body
 
-    // Honeypot: человек не видит скрытое поле, бот заполняет — отбрасываем
-    if (website) {
-      return NextResponse.json({ ok: true })
-    }
+    // Honeypot: бот заполняет скрытое поле — тихо отбрасываем
+    if (website) return NextResponse.json({ ok: true })
 
-    // Серверная валидация: клиенту не верим никогда
+    // Серверная валидация: клиенту не верим
     if (!name || !phone || phone.replace(/\D/g, '').length !== 11) {
       return NextResponse.json(
         { error: 'Проверьте имя и телефон' },
@@ -23,11 +24,12 @@ export async function POST(request: Request) {
     const payload = await getPayload({ config })
     await payload.create({
       collection: 'leads',
-      data: { name, phone, email, clientType, comment },
+      data: { name, phone, email, clientType, comment, company, city, businessType, volume },
     })
 
     return NextResponse.json({ ok: true })
-  } catch {
+  } catch (error) {
+    console.error('Ошибка заявки:', error)
     return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 })
   }
 }

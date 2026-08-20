@@ -3,11 +3,14 @@
 import { useState } from 'react'
 import { formatPhone } from '@/lib/format'
 
-export default function LeadForm() {
+export default function DealerForm() {
+  const [company, setCompany] = useState('')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
-  const [clientType, setClientType] = useState('dealer')
+  const [city, setCity] = useState('')
+  const [businessType, setBusinessType] = useState('wholesale')
+  const [volume, setVolume] = useState('s')
   const [comment, setComment] = useState('')
   const [consent, setConsent] = useState(false)
   const [state, setState] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle')
@@ -16,8 +19,13 @@ export default function LeadForm() {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
 
+    if (!company.trim()) {
+      setError('Укажите название компании.')
+      setState('error')
+      return
+    }
     if (!name.trim()) {
-      setError('Укажите имя.')
+      setError('Укажите контактное лицо.')
       setState('error')
       return
     }
@@ -27,7 +35,7 @@ export default function LeadForm() {
       return
     }
     if (!consent) {
-      setError('Отметьте галочку «Согласен на обработку персональных данных».')
+      setError('Отметьте галочку согласия на обработку данных.')
       setState('error')
       return
     }
@@ -37,7 +45,10 @@ export default function LeadForm() {
     const res = await fetch('/api/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, email, clientType, comment }),
+      body: JSON.stringify({
+        name, phone, email, city, company, businessType, volume, comment,
+        clientType: 'dealer',
+      }),
     })
 
     if (res.ok) {
@@ -55,7 +66,7 @@ export default function LeadForm() {
       <div className="border border-accent bg-white p-8 text-center">
         <p className="text-2xl font-extrabold text-graphite">Заявка отправлена!</p>
         <p className="mt-2 text-ink-muted">
-          Менеджер свяжется с вами в течение рабочего дня.
+          Менеджер свяжется с вами в течение рабочего дня и подготовит коммерческое предложение.
         </p>
       </div>
     )
@@ -69,17 +80,22 @@ export default function LeadForm() {
       onSubmit={submit}
       className="grid grid-cols-1 gap-4 border border-gray-200 bg-white p-8 md:grid-cols-2"
     >
-      <input className={inputCls} placeholder="Ваше имя *" value={name} onChange={(e) => setName(e.target.value)} />
+      <input className={inputCls} placeholder="Название компании *" value={company} onChange={(e) => setCompany(e.target.value)} />
+      <input className={inputCls} placeholder="Контактное лицо *" value={name} onChange={(e) => setName(e.target.value)} />
       <input className={inputCls} placeholder="+7 (___) ___-__-__ *" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))} />
       <input className={inputCls} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <select className={inputCls} value={clientType} onChange={(e) => setClientType(e.target.value)}>
-        <option value="dealer">Дилер</option>
-        <option value="architect">Архитектор / проектировщик</option>
-        <option value="developer">Застройщик</option>
-        <option value="installer">Монтажник</option>
-        <option value="individual">Частное лицо</option>
+      <input className={inputCls} placeholder="Город" value={city} onChange={(e) => setCity(e.target.value)} />
+      <select className={inputCls} value={businessType} onChange={(e) => setBusinessType(e.target.value)}>
+        <option value="wholesale">Опт</option>
+        <option value="retail">Розница</option>
+        <option value="installation">Монтаж</option>
       </select>
-      <textarea className={`${inputCls} md:col-span-2`} rows={3} placeholder="Комментарий (модель, объём, сроки)" value={comment} onChange={(e) => setComment(e.target.value)} />
+      <select className={`${inputCls} md:col-span-2`} value={volume} onChange={(e) => setVolume(e.target.value)}>
+        <option value="s">Предполагаемый объём: до 100 шт/мес</option>
+        <option value="m">Предполагаемый объём: 100–500 шт/мес</option>
+        <option value="l">Предполагаемый объём: 500+ шт/мес</option>
+      </select>
+      <textarea className={`${inputCls} md:col-span-2`} rows={3} placeholder="Комментарий" value={comment} onChange={(e) => setComment(e.target.value)} />
 
       <label className="flex items-start gap-2 text-sm text-ink-muted md:col-span-2">
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1" />
@@ -95,7 +111,7 @@ export default function LeadForm() {
         disabled={state === 'sending'}
         className="bg-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-orange-600 disabled:opacity-50 md:col-span-2"
       >
-        {state === 'sending' ? 'Отправляем…' : 'Отправить заявку'}
+        {state === 'sending' ? 'Отправляем…' : 'Стать дилером'}
       </button>
     </form>
   )

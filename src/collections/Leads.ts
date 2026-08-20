@@ -2,13 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Leads: CollectionConfig = {
   slug: 'leads',
-  labels: {
-    singular: 'Заявка',
-    plural: 'Заявки',
-  },
+  labels: { singular: 'Заявка', plural: 'Заявки' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'phone', 'clientType', 'createdAt'],
+    defaultColumns: ['name', 'company', 'phone', 'clientType', 'createdAt'],
   },
   access: {
     read: ({ req: { user } }) => Boolean(user),
@@ -17,9 +14,11 @@ export const Leads: CollectionConfig = {
     delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
-    { name: 'name', type: 'text', label: 'Имя', required: true },
+    { name: 'name', type: 'text', label: 'Имя / контактное лицо', required: true },
+    { name: 'company', type: 'text', label: 'Компания' },
     { name: 'phone', type: 'text', label: 'Телефон', required: true },
     { name: 'email', type: 'text', label: 'Email' },
+    { name: 'city', type: 'text', label: 'Город' },
     {
       name: 'clientType',
       type: 'select',
@@ -32,6 +31,26 @@ export const Leads: CollectionConfig = {
         { label: 'Частное лицо', value: 'individual' },
       ],
       defaultValue: 'dealer',
+    },
+    {
+      name: 'businessType',
+      type: 'select',
+      label: 'Тип деятельности',
+      options: [
+        { label: 'Опт', value: 'wholesale' },
+        { label: 'Розница', value: 'retail' },
+        { label: 'Монтаж', value: 'installation' },
+      ],
+    },
+    {
+      name: 'volume',
+      type: 'select',
+      label: 'Предполагаемый объём закупок',
+      options: [
+        { label: 'До 100 шт/мес', value: 's' },
+        { label: '100–500 шт/мес', value: 'm' },
+        { label: '500+ шт/мес', value: 'l' },
+      ],
     },
     { name: 'comment', type: 'textarea', label: 'Комментарий' },
     {
