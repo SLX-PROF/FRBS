@@ -32,7 +32,7 @@ export default async function CatalogPage() {
                 href={`/catalog/${product.slug}`}
                 className="group flex flex-col border border-gray-200 bg-white transition-colors hover:border-accent"
               >
-                <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-white">
+                <div className="flex aspect-4/3 items-center justify-center overflow-hidden bg-white">
                   {photo?.url ? (
                     <img
                       src={photo.url}

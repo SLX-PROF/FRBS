@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import DownloadButton from '@/components/DownloadButton'
 import { getAllDocuments } from '@/lib/documents'
 
 export const metadata = {
@@ -46,15 +48,7 @@ export default async function DocsPage() {
                           <p className="text-sm text-ink-muted">{doc.description}</p>
                         )}
                       </div>
-                      {file?.url && (
-                        <a
-                          href={file.url}
-                          download
-                          className="shrink-0 bg-accent px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-600"
-                        >
-                          Скачать
-                        </a>
-                      )}
+                      {file?.url && <DownloadButton href={file.url} />}
                     </div>
                   )
                 })}
@@ -69,6 +63,7 @@ export default async function DocsPage() {
           </p>
         )}
       </section>
+      <Footer />
     </main>
   )
 }

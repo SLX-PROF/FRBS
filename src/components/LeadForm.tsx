@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { formatPhone } from '@/lib/format'
+import { trackGoal } from '@/lib/metrika'
 
 export default function LeadForm() {
   const [name, setName] = useState('')
@@ -41,6 +42,7 @@ export default function LeadForm() {
     })
 
     if (res.ok) {
+      trackGoal('lead_submit')
       setState('ok')
     } else {
       setError(

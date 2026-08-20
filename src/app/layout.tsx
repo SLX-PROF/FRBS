@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Manrope, Golos_Text } from 'next/font/google'
 import './globals.css'
+import Metrika from '@/components/Metrika'
 
 const manrope = Manrope({
   subsets: ['cyrillic', 'latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={`${manrope.variable} ${golos.variable} antialiased`}>
+        <Metrika />
         {children}
       </body>
     </html>

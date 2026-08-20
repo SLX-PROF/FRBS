@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { formatPhone } from '@/lib/format'
+import { trackGoal } from '@/lib/metrika'
 
 export default function DealerForm() {
   const [company, setCompany] = useState('')
@@ -52,6 +53,7 @@ export default function DealerForm() {
     })
 
     if (res.ok) {
+      trackGoal('lead_submit')
       setState('ok')
     } else {
       setError(
