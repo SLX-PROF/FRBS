@@ -33,7 +33,7 @@ export default function SearchBar() {
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
         placeholder="Поиск: модель, документ…"
-        className="w-full border border-white/20 bg-white/10 px-4 py-2 text-white placeholder-gray-400 outline-none transition-colors focus:border-accent"
+        className="w-full rounded-btn border border-line bg-white px-4 py-2 text-ink placeholder-ink-muted/60 outline-none transition-colors focus:border-accent"
       />
 
       {open && results && (results.products.length > 0 || results.documents.length > 0) && (

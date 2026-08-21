@@ -1,3 +1,4 @@
+import ScrollProgress from '@/components/motion/ScrollProgress'
 import type { Metadata } from 'next'
 import { Manrope, Golos_Text } from 'next/font/google'
 import './globals.css'
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="ru" suppressHydrationWarning>
       <body className={`${manrope.variable} ${golos.variable} antialiased`} suppressHydrationWarning>
         <Metrika />
+        <ScrollProgress />
         {children}
       </body>
     </html>

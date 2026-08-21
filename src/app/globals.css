@@ -1,19 +1,41 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-graphite: #1F2429;
-  --color-graphite-light: #2A3036;
-  --color-accent: #FF6B00;
-  --color-surface: #F4F5F6;
-  --color-ink: #3A3F45;
-  --color-ink-muted: #6B7280;
+  /* Палитра — дизайн-код FORBSA, итог */
+  --color-graphite: #17191d;
+  --color-ink: #23262b;
+  --color-ink-muted: #6f747c;
+  --color-surface: #f6f7f9;
+  --color-line: #e5e8ec;
+  --color-accent: #f25a00;
+  --color-accent-dark: #ef4e00;
+  --color-accent-bright: #ff7a1a;
+  --color-accent-light: #fff3ea;
+
+  /* Типографика */
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+
+  /* Форма: панельность + скругления (level.ru) */
+  --radius-panel: 16px;
+  --radius-btn: 12px;
+
+  /* Тени: мягкие, только для подъёма */
+  --shadow-panel: 0 12px 32px rgb(23 25 29 / 0.1);
+  --shadow-lift: 0 20px 48px rgb(23 25 29 / 0.14);
+
+  /* Плавность уровня apple */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body {
-  font-family: var(--font-body), system-ui, sans-serif;
-  color: var(--color-ink);
-}
-
-h1, h2, h3 {
-  font-family: var(--font-heading), system-ui, sans-serif;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-body text-ink antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-extrabold tracking-tight;
+  }
 }
