@@ -15,6 +15,8 @@ export const metadata = {
     'Врезные и накладные автоматические пороги FORBSA. 10 моделей для алюминиевых, стальных, ПВХ и деревянных дверей. Шаг длины 200 мм.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function CatalogPage() {
   const payload = await getPayload({ config: configPromise })
 

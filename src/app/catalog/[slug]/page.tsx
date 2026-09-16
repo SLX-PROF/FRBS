@@ -11,6 +11,8 @@ import Button from '@/components/ui/Button'
 import ProfileGlyph from '@/components/ui/ProfileGlyph'
 import { SteelIcon, NoPlasticIcon, LevelIcon, AdjustIcon } from '@/components/ui/Icons'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const payload = await getPayload({ config: configPromise })
