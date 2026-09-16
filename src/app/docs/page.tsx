@@ -1,9 +1,12 @@
-import Link from 'next/link'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LeadMagnetForm from '@/components/LeadMagnetForm'
+import Button from '@/components/ui/Button'
+import Tag from '@/components/ui/Tag'
+import { BookIcon, CertificateIcon, WrenchIcon, ScaleIcon } from '@/components/ui/Icons'
+import type { ComponentType } from 'react'
 
 export const metadata = {
   title: 'Документация FORBSA — сертификаты, альбом узлов, инструкции',
@@ -24,7 +27,7 @@ type DocCategory = {
   id: string
   title: string
   desc: string
-  icon: string
+  Icon: ComponentType<{ className?: string }>
   items: DocItem[]
 }
 
@@ -33,7 +36,7 @@ const categories: DocCategory[] = [
     id: 'album',
     title: 'Альбом типовых технических решений',
     desc: 'Основной документ для проектировщиков. Узлы примыкания, спецификации, готовые формулировки для ТЗ.',
-    icon: '📘',
+    Icon: BookIcon,
     items: [
       {
         title: 'Альбом ТТР FORBSA (полная версия)',
@@ -64,7 +67,7 @@ const categories: DocCategory[] = [
     id: 'certs',
     title: 'Сертификаты и протоколы',
     desc: 'Подтверждённое качество и соответствие российским стандартам.',
-    icon: '📜',
+    Icon: CertificateIcon,
     items: [
       {
         title: 'Сертификат РОСТЕСТ',
@@ -108,7 +111,7 @@ const categories: DocCategory[] = [
     id: 'instructions',
     title: 'Инструкции по монтажу',
     desc: 'Пошаговые руководства для монтажников. Видео и PDF.',
-    icon: '🔧',
+    Icon: WrenchIcon,
     items: [
       {
         title: 'Инструкция по монтажу врезных порогов',
@@ -145,7 +148,7 @@ const categories: DocCategory[] = [
     id: 'legal',
     title: 'Юридические документы',
     desc: 'Политики, согласия, реквизиты.',
-    icon: '⚖️',
+    Icon: ScaleIcon,
     items: [
       {
         title: 'Политика конфиденциальности',
@@ -179,19 +182,16 @@ export default function DocsPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite py-16 text-white md:py-24">
-        <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] rounded-full bg-accent/20 blur-3xl" />
-        <div className="relative mx-auto max-w-6xl px-6">
+      <section className="relative overflow-hidden bg-graphite py-20 text-white md:py-24">
+        <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
+        <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/70">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Для архитекторов и проектировщиков
-            </span>
+            <Tag tone="dark">Для архитекторов и проектировщиков</Tag>
           </Reveal>
           <Reveal delay={100}>
-            <h1 className="font-heading text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
               Документация{' '}
-              <span className="bg-gradient-to-r from-[#ff7a1a] to-[#f24e00] bg-clip-text text-transparent">
+              <span className="text-accent">
                 FORBSA
               </span>
             </h1>
@@ -206,15 +206,15 @@ export default function DocsPage() {
 
           {/* Быстрые ссылки */}
           <Reveal delay={300}>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {categories.map((c) => (
                 <a
                   key={c.id}
                   href={`#${c.id}`}
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/10"
+                  className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/10"
                 >
-                  <span>{c.icon}</span>
-                  {c.title.split(' ').slice(0, 2).join(' ')}
+                  <c.Icon className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{c.title.split(' ').slice(0, 2).join(' ')}</span>
                 </a>
               ))}
             </div>
@@ -223,18 +223,18 @@ export default function DocsPage() {
       </section>
 
       {/* КАТЕГОРИИ ДОКУМЕНТОВ */}
-      <section className="py-16">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="py-20">
+        <div className="mx-auto max-w-[1440px] px-6">
           <div className="space-y-16">
-            {categories.map((cat, catIdx) => (
+            {categories.map((cat) => (
               <div key={cat.id} id={cat.id} className="scroll-mt-20">
                 <Reveal>
                   <div className="mb-8 flex items-start gap-4">
-                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-3xl">
-                      {cat.icon}
+                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-accent/10 p-3.5 text-accent">
+                      <cat.Icon />
                     </div>
                     <div>
-                      <h2 className="font-heading text-2xl font-extrabold tracking-tight md:text-3xl">
+                      <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
                         {cat.title}
                       </h2>
                       <p className="mt-1 text-ink-muted">{cat.desc}</p>
@@ -289,17 +289,15 @@ export default function DocsPage() {
       </section>
 
       {/* ЛИД-МАГНИТ: АЛЬБОМ ПО ПОДПИСКЕ */}
-      <section className="bg-graphite py-16 text-white">
+      <section className="bg-graphite py-20 text-white">
         <div className="mx-auto max-w-4xl px-6">
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-8 md:p-12">
-              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
+              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 animate-drift-a rounded-full bg-accent/6 blur-3xl" />
 
               <div className="relative">
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
-                  🔥 Лид-магнит для проектировщиков
-                </div>
-                <h2 className="font-heading text-3xl font-extrabold md:text-4xl">
+                <Tag>Лид-магнит для проектировщиков</Tag>
+                <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
                   Получите Альбом ТТР + BIM-модели на email
                 </h2>
                 <p className="mt-3 max-w-xl text-white/70">
@@ -319,10 +317,10 @@ export default function DocsPage() {
       </section>
 
       {/* CTA-БЛОК */}
-      <section className="py-16">
+      <section className="py-20">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Reveal>
-            <h2 className="font-heading text-3xl font-extrabold tracking-tight md:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
               Нужна консультация инженера?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-ink-muted">
@@ -330,18 +328,12 @@ export default function DocsPage() {
               проконсультируем по госэкспертизе.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Link
-                href="/contacts"
-                className="inline-flex items-center gap-2 rounded-xl bg-accent px-7 py-4 font-semibold text-white shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:bg-accent-dark"
-              >
+              <Button href="/contacts" size="lg">
                 Связаться с инженером →
-              </Link>
-              <Link
-                href="/partners"
-                className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-7 py-4 font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-accent/30"
-              >
+              </Button>
+              <Button href="/partners" variant="outline" size="lg">
                 Стать дилером
-              </Link>
+              </Button>
             </div>
           </Reveal>
         </div>

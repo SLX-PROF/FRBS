@@ -1,10 +1,12 @@
-import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Reveal from '@/components/motion/Reveal'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ScrollProgress from '@/components/motion/ScrollProgress'
+import Button from '@/components/ui/Button'
+import Tag from '@/components/ui/Tag'
+import SectionHeading from '@/components/ui/SectionHeading'
 import CatalogClient from './CatalogClient'
 
 export const metadata = {
@@ -28,18 +30,15 @@ export default async function CatalogPage() {
       <Header />
 
       {/* HERO КАТАЛОГА */}
-      <section className="bg-graphite py-16 text-white md:py-20">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="bg-graphite py-20 text-white md:py-20">
+        <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/70">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              10 моделей в линейке
-            </span>
+            <Tag tone="dark">10 моделей в линейке</Tag>
           </Reveal>
           <Reveal delay={100}>
-            <h1 className="font-heading text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
               Каталог продукции{' '}
-              <span className="bg-gradient-to-r from-[#ff7a1a] to-[#f24e00] bg-clip-text text-transparent">
+              <span className="text-accent">
                 FORBSA
               </span>
             </h1>
@@ -54,29 +53,30 @@ export default async function CatalogPage() {
       </section>
 
       {/* ФИЛЬТРЫ + СЕТКА */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="py-12 md:py-20">
+        <div className="mx-auto max-w-[1440px] px-6">
           <CatalogClient products={docs} />
         </div>
       </section>
 
       {/* CTA-БЛОК */}
-      <section className="bg-graphite py-16 text-white">
+      <section className="bg-graphite py-20 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Reveal>
-            <h2 className="font-heading text-3xl font-extrabold md:text-4xl">
-              Не знаете, какая модель подходит?
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/70">
-              Инженер подберёт модель под тип двери, ширину проёма и требования
-              к герметизации.
-            </p>
-            <Link
-              href="/contacts"
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-accent px-7 py-4 text-base font-semibold text-white shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:bg-accent-dark"
-            >
-              Получить консультацию →
-            </Link>
+            <SectionHeading
+              dark
+              center
+              title="Не знаете, какая модель подходит?"
+              subtitle="Укажите ширину двери и тип монтажа в калькуляторе — покажем подходящие модели за пару секунд."
+            />
+            <div className="flex flex-wrap justify-center gap-3">
+              <Button href="/calculator" size="lg">
+                Подобрать модель →
+              </Button>
+              <Button href="/contacts" variant="ghost" size="lg">
+                Консультация инженера
+              </Button>
+            </div>
           </Reveal>
         </div>
       </section>

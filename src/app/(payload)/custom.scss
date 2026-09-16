@@ -1,0 +1,119 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Оформление админки под бренд FORBSA.
+   Payload 3 монохромен по умолчанию; акцент (фокус, активные состояния,
+   переключатели, primary-кнопки) завязан на переменные --theme-success-*.
+   Переопределяем их на фирменный оранжевый + правим форму, шрифт, вход.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Оранжевый рамп FORBSA вместо зелёного акцента Payload */
+  --theme-success-50: #fff3ea;
+  --theme-success-100: #ffe2cc;
+  --theme-success-150: #ffd0ad;
+  --theme-success-200: #ffbd8f;
+  --theme-success-250: #ffa970;
+  --theme-success-300: #ff9552;
+  --theme-success-400: #fb7e2e;
+  --theme-success-500: #f25a00;
+  --theme-success-600: #d94e00;
+  --theme-success-650: #c74700;
+  --theme-success-700: #b84100;
+  --theme-success-750: #a83c00;
+  --theme-success-800: #8a3100;
+  --theme-success-850: #6f2800;
+  --theme-success-900: #571f00;
+  --theme-success-950: #3d1600;
+
+  --accessibility-outline: 2px solid #f25a00;
+  --accessibility-outline-offset: 2px;
+
+  /* Форма: чуть мягче углы, как на сайте */
+  --style-radius-s: 8px;
+  --style-radius-m: 12px;
+  --style-radius-l: 16px;
+
+  /* Тот же системный шрифтовой стек, что и на сайте */
+  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Primary-кнопки (Создать / Сохранить) — фирменный оранжевый */
+.btn--style-primary {
+  --bg-color: #f25a00;
+  --hover-bg: #d94e00;
+  --color: #fff;
+  --hover-color: #fff;
+}
+
+/* Левая навигация — тонкая акцентная полоса сверху и аккуратные группы */
+.nav {
+  border-top: 3px solid #f25a00;
+}
+.nav-group__label,
+.nav__group-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  opacity: 0.6;
+}
+.nav__link--active,
+.nav__link[aria-current='page'] {
+  box-shadow: inset 3px 0 0 #f25a00;
+}
+
+/* Хлебные крошки / шапка документа — чуть плотнее */
+.step-nav {
+  font-size: 13px;
+}
+
+/* Экран входа — карточка по центру, акцент на бренде */
+.login {
+  &__wrap,
+  &__form {
+    border-radius: var(--style-radius-l);
+  }
+  .graphic-logo,
+  [class*='logout'] {
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Панель приветствия перед дашбордом */
+.forbsa-welcome {
+  border: 1px solid var(--theme-elevation-150);
+  border-left: 4px solid #f25a00;
+  border-radius: var(--style-radius-m);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  background: var(--theme-elevation-0);
+
+  h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+  }
+  p {
+    margin: 0 0 14px;
+    color: var(--theme-elevation-500);
+    font-size: 13px;
+  }
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border-radius: 980px;
+    background: var(--theme-elevation-100);
+    color: var(--theme-elevation-800);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  a:hover {
+    background: #f25a00;
+    color: #fff;
+  }
+}

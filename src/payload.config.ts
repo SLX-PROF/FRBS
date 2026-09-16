@@ -10,6 +10,14 @@ import { Media } from './collections/Media'
 import { Products } from './collections/Products'
 import { Leads } from './collections/Leads'
 import { Documents } from './collections/Documents'
+import { Companies } from './collections/Companies'
+import { Deals } from './collections/Deals'
+import { Activities } from './collections/Activities'
+import { AuditLog } from './collections/AuditLog'
+import { KbChunks } from './collections/KbChunks'
+import { ChatSessions } from './collections/ChatSessions'
+import { withAudit } from './lib/audit'
+import { CompanyProfile } from './globals/CompanyProfile'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,8 +28,31 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: '— FORBSA',
+    },
+    components: {
+      graphics: {
+        Logo: '/components/admin/Brand#Logo',
+        Icon: '/components/admin/Brand#Icon',
+      },
+      beforeDashboard: ['/components/admin/Welcome#Welcome'],
+    },
   },
-  collections: [Users, Media, Products, Leads, Documents],
+  collections: [
+    Users,
+    Media,
+    Products,
+    Documents,
+    withAudit(Leads),
+    withAudit(Companies),
+    withAudit(Deals),
+    withAudit(Activities),
+    AuditLog,
+    KbChunks,
+    ChatSessions,
+  ],
+  globals: [CompanyProfile],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

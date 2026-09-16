@@ -1,22 +1,9 @@
 import ScrollProgress from '@/components/motion/ScrollProgress'
+import Preloader from '@/components/motion/Preloader'
+import ChatWidget from '@/components/chat/ChatWidget'
 import type { Metadata } from 'next'
-import { Manrope, Golos_Text } from 'next/font/google'
 import './globals.css'
 import Metrika from '@/components/Metrika'
-
-const manrope = Manrope({
-  subsets: ['cyrillic', 'latin'],
-  weight: ['700', '800'],
-  variable: '--font-heading',
-  display: 'swap',
-})
-
-const golos = Golos_Text({
-  subsets: ['cyrillic', 'latin'],
-  weight: ['400', '500'],
-  variable: '--font-body',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: 'FORBSA — автоматические пороги для дверей',
@@ -31,10 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${manrope.variable} ${golos.variable} antialiased`} suppressHydrationWarning>
+      <body className="antialiased" suppressHydrationWarning>
         <Metrika />
+        <Preloader />
         <ScrollProgress />
         {children}
+        <ChatWidget />
       </body>
     </html>
   )

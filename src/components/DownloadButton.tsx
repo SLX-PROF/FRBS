@@ -8,7 +8,7 @@ export default function DownloadButton({ href }: { href: string }) {
       href={href}
       download
       onClick={() => trackGoal('doc_download')}
-      className="shrink-0 bg-accent px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-600"
+      className="inline-flex shrink-0 items-center justify-center rounded-btn bg-accent px-4 py-2 font-display font-bold text-white transition-colors hover:bg-accent-dark"
     >
       Скачать
     </a>

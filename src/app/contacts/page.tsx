@@ -1,14 +1,18 @@
-import Link from 'next/link'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LeadForm from '@/components/LeadForm'
+import Button from '@/components/ui/Button'
+import Card from '@/components/ui/Card'
+import Tag from '@/components/ui/Tag'
+import SectionHeading from '@/components/ui/SectionHeading'
+import { MapPinIcon, PhoneIcon, MailIcon, MessageIcon } from '@/components/ui/Icons'
 
 export const metadata = {
   title: 'Контакты FORBSA — офис и производство в Екатеринбурге',
   description:
-    'Свяжитесь с FORBSA: офис и производство в Екатеринбурге. Телефон, email, форма обратной связи, реквизиты ООО «Форбса». Отвечаем в течение рабочего дня.',
+    'Свяжитесь с FORBSA: офис и производство в Москве. Телефон, email, форма обратной связи, реквизиты ООО «Форбса». Отвечаем в течение рабочего дня.',
 }
 
 export default function ContactsPage() {
@@ -18,19 +22,16 @@ export default function ContactsPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite py-16 text-white md:py-24">
-        <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] rounded-full bg-accent/20 blur-3xl" />
-        <div className="relative mx-auto max-w-6xl px-6">
+      <section className="relative overflow-hidden bg-graphite py-20 text-white md:py-24">
+        <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
+        <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/70">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Офис · Производство
-            </span>
+            <Tag tone="dark">Офис · Производство</Tag>
           </Reveal>
           <Reveal delay={100}>
-            <h1 className="font-heading text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
               Свяжитесь{' '}
-              <span className="bg-gradient-to-r from-[#ff7a1a] to-[#f24e00] bg-clip-text text-transparent">
+              <span className="text-accent">
                 с нами
               </span>
             </h1>
@@ -45,81 +46,71 @@ export default function ContactsPage() {
       </section>
 
       {/* КОНТАКТЫ + КАРТА */}
-      <section className="py-16">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="py-20">
+        <div className="mx-auto max-w-[1440px] px-6">
           <div className="grid gap-8 lg:grid-cols-5">
             {/* ЛЕВАЯ КОЛОНКА — КОНТАКТЫ */}
             <div className="lg:col-span-2">
               <Reveal>
                 <div className="space-y-6">
                   {/* АДРЕС */}
-                  <div className="rounded-2xl border border-line bg-white p-6 transition-all hover:border-accent/30">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
+                  <Card>
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 p-2 text-accent">
+                      <MapPinIcon />
                     </div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
                       Адрес
                     </div>
                     <div className="mt-1 font-semibold">
-                      г. Екатеринбург, ул. Производственная, 1
+                      117105, город Москва, 1-Й Нагатинский пр-д, д. 2 стр. 12, помещ. 2/2 
                     </div>
                     <div className="mt-1 text-sm text-ink-muted">
                       Офис и производство
                     </div>
-                  </div>
+                  </Card>
 
                   {/* ТЕЛЕФОН */}
-                  <div className="rounded-2xl border border-line bg-white p-6 transition-all hover:border-accent/30">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
-                      </svg>
+                  <Card>
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 p-2 text-accent">
+                      <PhoneIcon />
                     </div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
                       Телефон
                     </div>
                     <a
-                      href="tel:+73430000000"
+                      href="tel:+79661570386"
                       className="mt-1 block text-xl font-bold transition-colors hover:text-accent"
                     >
-                      +7 (343) 000-00-00
+                      +7 (966) 157-03-86
                     </a>
                     <div className="mt-1 text-sm text-ink-muted">
                       Пн–Пт, 9:00–18:00 (МСК+2)
                     </div>
-                  </div>
+                  </Card>
 
                   {/* EMAIL */}
-                  <div className="rounded-2xl border border-line bg-white p-6 transition-all hover:border-accent/30">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <path d="M22 6l-10 7L2 6" />
-                      </svg>
+                  <Card>
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 p-2 text-accent">
+                      <MailIcon />
                     </div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
                       Email
                     </div>
                     <a
-                      href="mailto:info@forbsa.ru"
+                      href="mailto:sales@forbsa.ru"
                       className="mt-1 block text-lg font-bold transition-colors hover:text-accent"
                     >
-                      info@forbsa.ru
+                      sales@forbsa.ru
                     </a>
                     <div className="mt-1 text-sm text-ink-muted">
                       Для заявок и документов
                     </div>
-                  </div>
+                  </Card>
 
                   {/* МЕССЕНДЖЕРЫ */}
-                  <div className="rounded-2xl border border-line bg-white p-6 transition-all hover:border-accent/30">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-                      </svg>
+                  <Card>
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 p-2 text-accent">
+                      <MessageIcon />
                     </div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
                       Мессенджеры
@@ -142,7 +133,7 @@ export default function ContactsPage() {
                         Telegram
                       </a>
                     </div>
-                  </div>
+                  </Card>
                 </div>
               </Reveal>
             </div>
@@ -152,7 +143,7 @@ export default function ContactsPage() {
               <Reveal delay={150}>
                 <div className="overflow-hidden rounded-2xl border border-line">
                   <iframe
-                    src="https://yandex.ru/map-widget/v1/?ll=60.597465%2C56.838011&z=14&mode=search&text=Екатеринбург%20ул.%20Производственная%201"
+                    src="https://yandex.ru/maps/-/CTt1jEpY"
                     width="100%"
                     height="560"
                     frameBorder="0"
@@ -171,31 +162,29 @@ export default function ContactsPage() {
       </section>
 
       {/* РЕКВИЗИТЫ + РЕЖИМ РАБОТЫ */}
-      <section className="bg-graphite py-16 text-white">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="bg-graphite py-20 text-white">
+        <div className="mx-auto max-w-[1440px] px-6">
           <div className="grid gap-8 md:grid-cols-2">
             {/* РЕКВИЗИТЫ */}
             <Reveal>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur">
-                <div className="mb-4 text-xs font-semibold uppercase tracking-wider text-accent">
-                  Юридическая информация
-                </div>
-                <h2 className="font-heading text-2xl font-extrabold">
+              <div className="flex h-full flex-col rounded-panel border border-white/10 bg-white/5 p-8 backdrop-blur">
+                <Tag tone="dark">Юридическая информация</Tag>
+                <h2 className="mt-4 text-2xl font-semibold">
                   Реквизиты
                 </h2>
                 <div className="mt-6 space-y-3 text-sm">
                   {[
                     { label: 'Наименование', value: 'ООО «Форбса»' },
-                    { label: 'ИНН / КПП', value: '6600000000 / 660000000' },
-                    { label: 'ОГРН', value: '1236600000000' },
-                    { label: 'Юр. адрес', value: '620000, г. Екатеринбург, ул. Производственная, 1' },
-                    { label: 'Р/с', value: '40702810000000000000' },
-                    { label: 'Банк', value: 'ПАО Сбербанк, г. Екатеринбург' },
-                    { label: 'БИК', value: '046577651' },
+                    { label: 'ИНН / КПП', value: ' 7724455291 / 772401001' },
+                    { label: 'ОГРН', value: '1187746833416' },
+                    { label: 'Юр. адрес', value: '117105, город Москва, 1-Й Нагатинский пр-д, д. 2 стр. 12, помещ. 2/2' },
+                    { label: 'Р/с', value: '=' },
+                    { label: 'Банк', value: ' АO "Альфа-Банк" , г. Москва' },
+                    { label: 'БИК', value: '044525593' },
                   ].map((item) => (
                     <div key={item.label} className="flex items-start justify-between gap-4 border-b border-white/10 pb-2">
-                      <span className="text-white/50">{item.label}</span>
-                      <span className="text-right font-medium">{item.value}</span>
+                      <span className="flex-shrink-0 text-white/50">{item.label}</span>
+                      <span className="min-w-0 break-words text-right font-medium">{item.value}</span>
                     </div>
                   ))}
                 </div>
@@ -204,11 +193,9 @@ export default function ContactsPage() {
 
             {/* РЕЖИМ РАБОТЫ */}
             <Reveal delay={150}>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur">
-                <div className="mb-4 text-xs font-semibold uppercase tracking-wider text-accent">
-                  Когда мы работаем
-                </div>
-                <h2 className="font-heading text-2xl font-extrabold">
+              <div className="flex h-full flex-col rounded-panel border border-white/10 bg-white/5 p-8 backdrop-blur">
+                <Tag tone="dark">Когда мы работаем</Tag>
+                <h2 className="mt-4 text-2xl font-semibold">
                   Режим работы
                 </h2>
                 <div className="mt-6 space-y-3 text-sm">
@@ -230,11 +217,14 @@ export default function ContactsPage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 rounded-xl border border-accent/30 bg-accent/10 p-4 text-sm">
-                  <div className="font-semibold text-accent">💬 Отвечаем быстро</div>
-                  <div className="mt-1 text-white/70">
-                    Заявки с сайта обрабатываются в течение 1 рабочего дня.
-                    Срочные вопросы — в WhatsApp или Telegram.
+                <div className="mt-6 flex items-start gap-3 rounded-xl border border-accent/30 bg-accent/10 p-4 text-sm">
+                  <MessageIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
+                  <div>
+                    <div className="font-semibold text-accent">Отвечаем быстро</div>
+                    <div className="mt-1 text-white/70">
+                      Заявки с сайта обрабатываются в течение 1 рабочего дня.
+                      Срочные вопросы — в WhatsApp или Telegram.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -244,21 +234,19 @@ export default function ContactsPage() {
       </section>
 
       {/* ФОРМА ОБРАТНОЙ СВЯЗИ */}
-      <section className="relative overflow-hidden py-16">
-        <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-accent/10 blur-3xl" />
-        <div className="relative mx-auto max-w-3xl px-6 text-center">
+      <section className="relative overflow-hidden py-20">
+        <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Reveal>
-            <h2 className="font-heading text-3xl font-extrabold tracking-tight md:text-4xl">
-              Напишите нам
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-ink-muted">
-              Заполните форму — менеджер свяжется с вами в течение рабочего дня
-              и ответит на все вопросы.
-            </p>
+            <SectionHeading
+              center
+              title="Напишите нам"
+              subtitle="Заполните форму — менеджер свяжется с вами в течение рабочего дня и ответит на все вопросы."
+            />
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="mx-auto mt-10 max-w-2xl">
+            <div className="mx-auto mt-10 max-w-3xl">
               <LeadForm />
             </div>
           </Reveal>
@@ -266,11 +254,11 @@ export default function ContactsPage() {
       </section>
 
       {/* CTA-БЛОК */}
-      <section className="bg-surface py-16">
+      <section className="bg-surface py-20">
         <div className="mx-auto max-w-4xl px-6">
           <Reveal>
-            <div className="rounded-3xl border border-line bg-white p-8 text-center md:p-12">
-              <h2 className="font-heading text-2xl font-extrabold md:text-3xl">
+            <div className="rounded-panel border border-line bg-white p-8 text-center shadow-panel md:p-12">
+              <h2 className="text-2xl font-semibold md:text-3xl">
                 Хотите стать дилером?
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-ink-muted">
@@ -278,18 +266,10 @@ export default function ContactsPage() {
                 сотрудничество.
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <Link
-                  href="/partners"
-                  className="inline-flex items-center gap-2 rounded-xl bg-accent px-7 py-3.5 font-semibold text-white shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:bg-accent-dark"
-                >
-                  Условия партнёрства →
-                </Link>
-                <Link
-                  href="/docs"
-                  className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-7 py-3.5 font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-accent/30"
-                >
+                <Button href="/partners">Условия партнёрства →</Button>
+                <Button href="/docs" variant="outline">
                   Документация
-                </Link>
+                </Button>
               </div>
             </div>
           </Reveal>

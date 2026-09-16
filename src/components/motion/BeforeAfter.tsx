@@ -3,11 +3,12 @@
 import { useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
-export default function BeforeAfter({ before, after, beforeLabel, afterLabel }: {
+export default function BeforeAfter({ before, after, beforeLabel, afterLabel, className = '' }: {
   before: ReactNode
   after: ReactNode
   beforeLabel: string
   afterLabel: string
+  className?: string
 }) {
   const [pos, setPos] = useState(50)
   const ref = useRef<HTMLDivElement>(null)
@@ -23,7 +24,7 @@ export default function BeforeAfter({ before, after, beforeLabel, afterLabel }: 
   return (
     <div
       ref={ref}
-      className="relative touch-none select-none overflow-hidden rounded-panel border border-line bg-white shadow-panel"
+      className={`relative touch-none select-none overflow-hidden rounded-panel border border-line bg-white shadow-panel ${className}`}
       onPointerDown={(e) => { dragging.current = true; update(e.clientX) }}
       onPointerMove={(e) => dragging.current && update(e.clientX)}
       onPointerUp={() => { dragging.current = false }}

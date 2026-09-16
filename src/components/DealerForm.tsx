@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { formatPhone } from '@/lib/format'
 import { trackGoal } from '@/lib/metrika'
+import Button from '@/components/ui/Button'
+import { CheckIcon } from '@/components/ui/Icons'
 
 export default function DealerForm() {
   const [company, setCompany] = useState('')
@@ -47,7 +49,7 @@ export default function DealerForm() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name, phone, email, city, company, businessType, volume, comment,
+        name, phone, email, city, company, businessType, volume, comment, consent,
         clientType: 'dealer',
       }),
     })
@@ -56,17 +58,18 @@ export default function DealerForm() {
       trackGoal('lead_submit')
       setState('ok')
     } else {
-      setError(
-        'Форма заполнена верно, но сервер вернул ошибку. Откройте терминал с npm run dev и пришлите красный текст.',
-      )
+      setError('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам на info@forbsa.ru.')
       setState('error')
     }
   }
 
   if (state === 'ok') {
     return (
-      <div className="border border-accent bg-white p-8 text-center">
-        <p className="text-2xl font-extrabold text-graphite">Заявка отправлена!</p>
+      <div className="rounded-panel border border-line bg-white p-8 text-center shadow-panel">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent p-3.5 text-white">
+          <CheckIcon />
+        </div>
+        <p className="mt-4 text-2xl font-semibold text-ink">Заявка отправлена!</p>
         <p className="mt-2 text-ink-muted">
           Менеджер свяжется с вами в течение рабочего дня и подготовит коммерческое предложение.
         </p>
@@ -75,46 +78,48 @@ export default function DealerForm() {
   }
 
   const inputCls =
-    'w-full border border-gray-300 bg-white px-4 py-3 text-ink outline-none transition-colors focus:border-accent'
+    'w-full rounded-field border border-line bg-surface px-4 py-3.5 text-ink placeholder:text-ink-muted outline-none transition-colors focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10'
 
   return (
     <form
       onSubmit={submit}
-      className="grid grid-cols-1 gap-4 border border-gray-200 bg-white p-8 md:grid-cols-2"
+      className="grid grid-cols-1 gap-4 rounded-panel border border-line bg-white p-8 text-left shadow-panel md:grid-cols-2"
     >
-      <input className={inputCls} placeholder="Название компании *" value={company} onChange={(e) => setCompany(e.target.value)} />
-      <input className={inputCls} placeholder="Контактное лицо *" value={name} onChange={(e) => setName(e.target.value)} />
-      <input className={inputCls} placeholder="+7 (___) ___-__-__ *" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))} />
-      <input className={inputCls} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input className={inputCls} placeholder="Город" value={city} onChange={(e) => setCity(e.target.value)} />
-      <select className={inputCls} value={businessType} onChange={(e) => setBusinessType(e.target.value)}>
+      <input aria-label="Название компании" className={inputCls} placeholder="Название компании *" value={company} onChange={(e) => setCompany(e.target.value)} />
+      <input aria-label="Контактное лицо" className={inputCls} placeholder="Контактное лицо *" value={name} onChange={(e) => setName(e.target.value)} />
+      <input aria-label="Телефон" className={inputCls} placeholder="+7 (___) ___-__-__ *" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))} />
+      <input aria-label="Email" className={inputCls} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input aria-label="Город" className={inputCls} placeholder="Город" value={city} onChange={(e) => setCity(e.target.value)} />
+      <select aria-label="Тип бизнеса" className={inputCls} value={businessType} onChange={(e) => setBusinessType(e.target.value)}>
         <option value="wholesale">Опт</option>
         <option value="retail">Розница</option>
         <option value="installation">Монтаж</option>
       </select>
-      <select className={`${inputCls} md:col-span-2`} value={volume} onChange={(e) => setVolume(e.target.value)}>
+      <select aria-label="Предполагаемый объём" className={`${inputCls} md:col-span-2`} value={volume} onChange={(e) => setVolume(e.target.value)}>
         <option value="s">Предполагаемый объём: до 100 шт/мес</option>
         <option value="m">Предполагаемый объём: 100–500 шт/мес</option>
         <option value="l">Предполагаемый объём: 500+ шт/мес</option>
       </select>
-      <textarea className={`${inputCls} md:col-span-2`} rows={3} placeholder="Комментарий" value={comment} onChange={(e) => setComment(e.target.value)} />
+      <textarea aria-label="Комментарий" className={`${inputCls} md:col-span-2`} rows={3} placeholder="Комментарий" value={comment} onChange={(e) => setComment(e.target.value)} />
 
-      <label className="flex items-start gap-2 text-sm text-ink-muted md:col-span-2">
-        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1" />
-        Согласен на обработку персональных данных *
-      </label>
+      <div className="flex items-start gap-2 text-sm text-ink-muted md:col-span-2">
+        <input id="dealer-consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 accent-accent" />
+        <span>
+          <label htmlFor="dealer-consent">Согласен на обработку </label>
+          <a href="/privacy" target="_blank" className="text-accent underline underline-offset-2 hover:no-underline">
+            персональных данных
+          </a>{' '}
+          *
+        </span>
+      </div>
 
       {state === 'error' && (
         <p className="text-sm text-red-600 md:col-span-2">{error}</p>
       )}
 
-      <button
-        type="submit"
-        disabled={state === 'sending'}
-        className="bg-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-orange-600 disabled:opacity-50 md:col-span-2"
-      >
+      <Button type="submit" disabled={state === 'sending'} size="lg" className="md:col-span-2">
         {state === 'sending' ? 'Отправляем…' : 'Стать дилером'}
-      </button>
+      </Button>
     </form>
   )
 }

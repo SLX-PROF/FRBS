@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { reindexOneProduct } from '../lib/ai/kb'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -8,6 +9,37 @@ export const Products: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, req }) => {
+        try {
+          await reindexOneProduct(req.payload, doc)
+        } catch (err) {
+          req.payload.logger.error({ msg: 'kb reindex (product) failed', err })
+        }
+        return doc
+      },
+    ],
+    afterDelete: [
+      async ({ id, req }) => {
+        try {
+          const stale = await req.payload.find({
+            collection: 'kb-chunks',
+            where: { and: [{ source: { equals: 'product' } }, { refId: { equals: id } }] },
+            limit: 10,
+            depth: 0,
+          })
+          await Promise.all(
+            stale.docs.map((c: { id: number | string }) =>
+              req.payload.delete({ collection: 'kb-chunks', id: c.id, overrideAccess: true }),
+            ),
+          )
+        } catch (err) {
+          req.payload.logger.error({ msg: 'kb cleanup (product) failed', err })
+        }
+      },
+    ],
   },
   fields: [
     {

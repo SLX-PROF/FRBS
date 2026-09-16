@@ -7,6 +7,9 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import LeadForm from '@/components/LeadForm'
+import Button from '@/components/ui/Button'
+import ProfileGlyph from '@/components/ui/ProfileGlyph'
+import { SteelIcon, NoPlasticIcon, LevelIcon, AdjustIcon } from '@/components/ui/Icons'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -57,7 +60,7 @@ export default async function ProductPage({
 
       {/* Хлебные крошки */}
       <div className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-6xl items-center gap-2 px-6 py-3 text-sm text-ink-muted">
+        <div className="mx-auto flex max-w-[1440px] items-center gap-2 px-6 py-3 text-sm text-ink-muted">
           <Link href="/" className="hover:text-accent">Главная</Link>
           <span>/</span>
           <Link href="/catalog" className="hover:text-accent">Каталог</Link>
@@ -67,16 +70,12 @@ export default async function ProductPage({
       </div>
 
       {/* ОСНОВНОЙ БЛОК */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-2">
+      <section className="py-12 md:py-20">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-6 lg:grid-cols-2">
           {/* ФОТО */}
           <Reveal>
-            <div className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-surface to-line">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-heading text-[120px] font-extrabold text-ink/10">
-                  {product.series ?? 'F'}
-                </span>
-              </div>
+            <div className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface">
+              <ProfileGlyph variant={((product.id ?? 0) % 3) as 0 | 1 | 2} />
               {product.series && (
                 <div className="absolute left-4 top-4 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white">
                   Серия {product.series}
@@ -88,7 +87,7 @@ export default async function ProductPage({
           {/* ИНФО */}
           <Reveal delay={150}>
             <div className="flex flex-col">
-              <h1 className="font-heading text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
+              <h1 className="text-3xl tracking-tight md:text-4xl lg:text-5xl">
                 {product.title}
               </h1>
 
@@ -105,9 +104,9 @@ export default async function ProductPage({
                 </div>
                 <div className="divide-y divide-line">
                   {specs.map((s) => (
-                    <div key={s.label} className="flex items-center justify-between px-6 py-3">
-                      <span className="text-sm text-ink-muted">{s.label}</span>
-                      <span className="text-sm font-semibold">{s.value}</span>
+                    <div key={s.label} className="flex items-center justify-between gap-4 px-6 py-3">
+                      <span className="flex-shrink-0 text-sm text-ink-muted">{s.label}</span>
+                      <span className="min-w-0 break-words text-right text-sm font-semibold">{s.value}</span>
                     </div>
                   ))}
                   <div className="flex items-center justify-between px-6 py-3">
@@ -123,7 +122,7 @@ export default async function ProductPage({
 
               {/* РЕКОМЕНДАЦИЯ (если есть) */}
               {product.recommendation && (
-                <div className="mt-6 rounded-2xl border-l-4 border-accent bg-orange-50/50 p-5">
+                <div className="mt-6 rounded-panel border-l-4 border-accent bg-accent-light p-5">
                   <div className="text-xs font-semibold uppercase tracking-wider text-accent">
                     Рекомендация
                   </div>
@@ -143,18 +142,10 @@ export default async function ProductPage({
 
               {/* CTA */}
               <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href="#lead-form"
-                  className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:bg-accent-dark"
-                >
-                  Запросить цену →
-                </a>
-                <Link
-                  href="/docs"
-                  className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-6 py-3.5 text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-accent/30"
-                >
+                <Button href="#lead-form">Запросить цену →</Button>
+                <Button href="/docs" variant="outline">
                   Скачать PDF
-                </Link>
+                </Button>
               </div>
             </div>
           </Reveal>
@@ -162,22 +153,25 @@ export default async function ProductPage({
       </section>
 
       {/* ПРЕИМУЩЕСТВА МОДЕЛИ */}
-      <section className="bg-graphite py-16 text-white">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="bg-graphite py-20 text-white">
+        <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <h2 className="font-heading text-3xl font-extrabold md:text-4xl">
+            <h2 className="text-3xl font-bold md:text-4xl">
               Почему <span className="text-accent">{product.title}</span>
             </h2>
           </Reveal>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { title: 'Нержавейка A2', desc: 'AISI 304' },
-              { title: 'Без пластика', desc: 'Только металл' },
-              { title: 'Самовыравнивание', desc: 'Компенсация пола' },
-              { title: 'Регулировка', desc: 'До 18 мм' },
+              { title: 'Нержавейка A2', desc: 'AISI 304', Icon: SteelIcon },
+              { title: 'Без пластика', desc: 'Только металл', Icon: NoPlasticIcon },
+              { title: 'Самовыравнивание', desc: 'Компенсация пола', Icon: LevelIcon },
+              { title: 'Регулировка', desc: 'До 18 мм', Icon: AdjustIcon },
             ].map((item, i) => (
               <Reveal key={item.title} delay={i * 80}>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <div className="h-full rounded-panel border border-white/10 bg-white/5 p-6">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 p-2 text-accent">
+                    <item.Icon />
+                  </div>
                   <div className="font-semibold">{item.title}</div>
                   <div className="mt-1 text-sm text-white/60">{item.desc}</div>
                 </div>
@@ -188,11 +182,11 @@ export default async function ProductPage({
       </section>
 
       {/* ФОРМА ЗАЯВКИ */}
-      <section id="lead-form" className="relative overflow-hidden py-16">
-        <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-accent/10 blur-3xl" />
-        <div className="relative mx-auto max-w-3xl px-6 text-center">
+      <section id="lead-form" className="relative overflow-hidden py-20">
+        <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Reveal>
-            <h2 className="font-heading text-3xl font-extrabold md:text-4xl">
+            <h2 className="text-3xl font-bold md:text-4xl">
               Запрос по модели «{product.title}»
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-ink-muted">
@@ -201,7 +195,7 @@ export default async function ProductPage({
             </p>
           </Reveal>
           <Reveal delay={150}>
-            <div className="mx-auto mt-10 max-w-2xl">
+            <div className="mx-auto mt-10 max-w-3xl">
               <LeadForm />
             </div>
           </Reveal>

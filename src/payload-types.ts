@@ -70,8 +70,14 @@ export interface Config {
     users: User;
     media: Media;
     products: Product;
-    leads: Lead;
     documents: Document;
+    leads: Lead;
+    companies: Company;
+    deals: Deal;
+    activities: Activity;
+    'audit-log': AuditLog;
+    'kb-chunks': KbChunk;
+    'chat-sessions': ChatSession;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,8 +88,14 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
-    leads: LeadsSelect<false> | LeadsSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    leads: LeadsSelect<false> | LeadsSelect<true>;
+    companies: CompaniesSelect<false> | CompaniesSelect<true>;
+    deals: DealsSelect<false> | DealsSelect<true>;
+    activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
+    'audit-log': AuditLogSelect<false> | AuditLogSelect<true>;
+    'kb-chunks': KbChunksSelect<false> | KbChunksSelect<true>;
+    'chat-sessions': ChatSessionsSelect<false> | ChatSessionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -93,8 +105,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'company-profile': CompanyProfile;
+  };
+  globalsSelect: {
+    'company-profile': CompanyProfileSelect<false> | CompanyProfileSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -129,6 +145,13 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  name: string;
+  role: 'admin' | 'manager';
+  /**
+   * Для уведомлений (этап SP3)
+   */
+  telegramChatId?: string | null;
+  active?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -195,25 +218,6 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "leads".
- */
-export interface Lead {
-  id: number;
-  name: string;
-  company?: string | null;
-  phone: string;
-  email?: string | null;
-  city?: string | null;
-  clientType?: ('architect' | 'developer' | 'dealer' | 'installer' | 'individual') | null;
-  businessType?: ('wholesale' | 'retail' | 'installation') | null;
-  volume?: ('s' | 'm' | 'l') | null;
-  comment?: string | null;
-  status?: ('new' | 'progress' | 'done' | 'spam') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "documents".
  */
 export interface Document {
@@ -223,6 +227,185 @@ export interface Document {
   product?: (number | null) | Product;
   file: number | Media;
   description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads".
+ */
+export interface Lead {
+  id: number;
+  name: string;
+  company?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  city?: string | null;
+  clientType?: ('architect' | 'developer' | 'dealer' | 'installer' | 'individual') | null;
+  businessType?: ('wholesale' | 'retail' | 'installation') | null;
+  volume?: ('s' | 'm' | 'l') | null;
+  comment?: string | null;
+  consent?: boolean | null;
+  consentAt?: string | null;
+  policyVersion?: string | null;
+  status?: ('new' | 'progress' | 'done' | 'spam') | null;
+  triageNote?: string | null;
+  owner?: (number | null) | User;
+  linkedCompany?: (number | null) | Company;
+  /**
+   * Проставляется при конвертации
+   */
+  linkedDeal?: (number | null) | Deal;
+  externalId?: string | null;
+  source?: ('site' | 'chatbot' | 'manual' | '1c') | null;
+  syncedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies".
+ */
+export interface Company {
+  id: number;
+  name: string;
+  inn?: string | null;
+  kind?: ('dealer' | 'architect' | 'developer' | 'installer' | 'endCustomer') | null;
+  city?: string | null;
+  website?: string | null;
+  contactPerson?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  notes?: string | null;
+  owner?: (number | null) | User;
+  externalId?: string | null;
+  source?: ('site' | 'chatbot' | 'manual' | '1c') | null;
+  syncedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deals".
+ */
+export interface Deal {
+  id: number;
+  title: string;
+  company: number | Company;
+  owner: number | User;
+  stage: 'proposal' | 'negotiation' | 'won' | 'lost';
+  amount?: number | null;
+  /**
+   * Если заполнено — сумма КП считается по позициям
+   */
+  positions?:
+    | {
+        label: string;
+        qty?: number | null;
+        unitPrice?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  validUntil?: string | null;
+  vatIncluded?: boolean | null;
+  products?: (number | Product)[] | null;
+  expectedCloseAt?: string | null;
+  lostReason?: string | null;
+  sourceLead?: (number | null) | Lead;
+  notes?: string | null;
+  externalId?: string | null;
+  source?: ('site' | 'chatbot' | 'manual' | '1c') | null;
+  syncedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities".
+ */
+export interface Activity {
+  id: number;
+  kind: 'call' | 'email' | 'meeting' | 'note';
+  subject: string;
+  body?: string | null;
+  deal?: (number | null) | Deal;
+  lead?: (number | null) | Lead;
+  author?: (number | null) | User;
+  /**
+   * Задача = активность со сроком и исполнителем
+   */
+  assignee?: (number | null) | User;
+  priority?: ('low' | 'normal' | 'high') | null;
+  dueAt?: string | null;
+  doneAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit-log".
+ */
+export interface AuditLog {
+  id: number;
+  action?: ('create' | 'update' | 'delete') | null;
+  collectionSlug?: string | null;
+  documentId?: string | null;
+  user?: (number | null) | User;
+  changedFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  at?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kb-chunks".
+ */
+export interface KbChunk {
+  id: number;
+  source?: string | null;
+  refId?: number | null;
+  refSlug?: string | null;
+  text?: string | null;
+  embedding?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-sessions".
+ */
+export interface ChatSession {
+  id: number;
+  token?: string | null;
+  messages?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  lead?: (number | null) | Lead;
+  consent?: boolean | null;
+  startedAt?: string | null;
+  lastAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -263,12 +446,36 @@ export interface PayloadLockedDocument {
         value: number | Product;
       } | null)
     | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
         relationTo: 'leads';
         value: number | Lead;
       } | null)
     | ({
-        relationTo: 'documents';
-        value: number | Document;
+        relationTo: 'companies';
+        value: number | Company;
+      } | null)
+    | ({
+        relationTo: 'deals';
+        value: number | Deal;
+      } | null)
+    | ({
+        relationTo: 'activities';
+        value: number | Activity;
+      } | null)
+    | ({
+        relationTo: 'audit-log';
+        value: number | AuditLog;
+      } | null)
+    | ({
+        relationTo: 'kb-chunks';
+        value: number | KbChunk;
+      } | null)
+    | ({
+        relationTo: 'chat-sessions';
+        value: number | ChatSession;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -317,6 +524,10 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  telegramChatId?: T;
+  active?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -376,6 +587,19 @@ export interface ProductsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  product?: T;
+  file?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads_select".
  */
 export interface LeadsSelect<T extends boolean = true> {
@@ -388,20 +612,128 @@ export interface LeadsSelect<T extends boolean = true> {
   businessType?: T;
   volume?: T;
   comment?: T;
+  consent?: T;
+  consentAt?: T;
+  policyVersion?: T;
   status?: T;
+  triageNote?: T;
+  owner?: T;
+  linkedCompany?: T;
+  linkedDeal?: T;
+  externalId?: T;
+  source?: T;
+  syncedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "documents_select".
+ * via the `definition` "companies_select".
  */
-export interface DocumentsSelect<T extends boolean = true> {
+export interface CompaniesSelect<T extends boolean = true> {
+  name?: T;
+  inn?: T;
+  kind?: T;
+  city?: T;
+  website?: T;
+  contactPerson?: T;
+  phone?: T;
+  email?: T;
+  notes?: T;
+  owner?: T;
+  externalId?: T;
+  source?: T;
+  syncedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deals_select".
+ */
+export interface DealsSelect<T extends boolean = true> {
   title?: T;
-  category?: T;
-  product?: T;
-  file?: T;
-  description?: T;
+  company?: T;
+  owner?: T;
+  stage?: T;
+  amount?: T;
+  positions?:
+    | T
+    | {
+        label?: T;
+        qty?: T;
+        unitPrice?: T;
+        id?: T;
+      };
+  validUntil?: T;
+  vatIncluded?: T;
+  products?: T;
+  expectedCloseAt?: T;
+  lostReason?: T;
+  sourceLead?: T;
+  notes?: T;
+  externalId?: T;
+  source?: T;
+  syncedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities_select".
+ */
+export interface ActivitiesSelect<T extends boolean = true> {
+  kind?: T;
+  subject?: T;
+  body?: T;
+  deal?: T;
+  lead?: T;
+  author?: T;
+  assignee?: T;
+  priority?: T;
+  dueAt?: T;
+  doneAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit-log_select".
+ */
+export interface AuditLogSelect<T extends boolean = true> {
+  action?: T;
+  collectionSlug?: T;
+  documentId?: T;
+  user?: T;
+  changedFields?: T;
+  at?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kb-chunks_select".
+ */
+export interface KbChunksSelect<T extends boolean = true> {
+  source?: T;
+  refId?: T;
+  refSlug?: T;
+  text?: T;
+  embedding?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-sessions_select".
+ */
+export interface ChatSessionsSelect<T extends boolean = true> {
+  token?: T;
+  messages?: T;
+  lead?: T;
+  consent?: T;
+  startedAt?: T;
+  lastAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -444,6 +776,50 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company-profile".
+ */
+export interface CompanyProfile {
+  id: number;
+  legalName?: string | null;
+  inn?: string | null;
+  kpp?: string | null;
+  ogrn?: string | null;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  bankName?: string | null;
+  account?: string | null;
+  corrAccount?: string | null;
+  bik?: string | null;
+  signerName?: string | null;
+  signerTitle?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company-profile_select".
+ */
+export interface CompanyProfileSelect<T extends boolean = true> {
+  legalName?: T;
+  inn?: T;
+  kpp?: T;
+  ogrn?: T;
+  address?: T;
+  phone?: T;
+  email?: T;
+  bankName?: T;
+  account?: T;
+  corrAccount?: T;
+  bik?: T;
+  signerName?: T;
+  signerTitle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
