@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_USER: forbsa
-      POSTGRES_PASSWORD: forbsa_dev_password
-      POSTGRES_DB: forbsa
+      POSTGRES_USER: ${POSTGRES_USER:-forbsa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-forbsa_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-forbsa}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
@@ -12,10 +12,10 @@ services:
 
   web:
     build: .
+    env_file: .env
     environment:
       NODE_ENV: production
-      PAYLOAD_SECRET: change_me_in_production
-      DATABASE_URL: postgresql://forbsa:forbsa_dev_password@db:5432/forbsa
+      DATABASE_URL: postgresql://${POSTGRES_USER:-forbsa}:${POSTGRES_PASSWORD:-forbsa_dev_password}@db:5432/${POSTGRES_DB:-forbsa}
     ports:
       - "3000:3000"
     depends_on:
