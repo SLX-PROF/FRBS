@@ -107,6 +107,7 @@ export const Products: CollectionConfig = {
       name: 'images',
       type: 'upload',
       relationTo: 'media',
+      hasMany: true,
       label: 'Фото',
     },
     {

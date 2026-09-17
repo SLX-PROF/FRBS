@@ -58,3 +58,20 @@ SP5 — `kb_chunks` (bot knowledge index) + `chat_sessions` tables, plus their
 ## `20260828_130000_sp5_chat_token`
 
 SP5 hardening — `chat_sessions.token` (unguessable session handle) + unique index.
+
+## `20260917_140000_products_images_gallery`
+
+`Products.images` changed from a single upload relation to a gallery
+(`hasMany: true`). Payload moves hasMany relations into a `<collection>_rels`
+join table (same shape as `deals_rels` from sp1/sp2) — creates `products_rels`,
+copies any existing `products.images_id` value into it as the first image,
+then drops the old `images_id` column/FK/index. `down()` reverses this
+(rebuilds `images_id` from the first `path = 'images'` row, drops
+`products_rels`).
+
+**`scripts/bootstrap-schema.sql` is now stale** — it's a `pg_dump` snapshot
+predating this migration and still has the old `products.images_id` column.
+It only matters for bootstrapping a brand-new prod DB from scratch (see repo
+root README/CLAUDE notes); an already-running prod DB should apply this
+migration via `npx payload migrate` instead. Regenerate the snapshot from a
+dev DB that has this migration applied before bootstrapping a new environment.

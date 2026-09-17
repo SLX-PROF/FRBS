@@ -3,6 +3,7 @@ import * as migration_20260828_100000_sp3_tasks from './20260828_100000_sp3_task
 import * as migration_20260828_110000_sp4_kp from './20260828_110000_sp4_kp'
 import * as migration_20260828_120000_sp5_chat from './20260828_120000_sp5_chat'
 import * as migration_20260828_130000_sp5_chat_token from './20260828_130000_sp5_chat_token'
+import * as migration_20260917_140000_products_images_gallery from './20260917_140000_products_images_gallery'
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20260828_130000_sp5_chat_token.up,
     down: migration_20260828_130000_sp5_chat_token.down,
     name: '20260828_130000_sp5_chat_token',
+  },
+  {
+    up: migration_20260917_140000_products_images_gallery.up,
+    down: migration_20260917_140000_products_images_gallery.down,
+    name: '20260917_140000_products_images_gallery',
   },
 ]

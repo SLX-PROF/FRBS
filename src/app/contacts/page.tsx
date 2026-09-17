@@ -10,7 +10,7 @@ import SectionHeading from '@/components/ui/SectionHeading'
 import { MapPinIcon, PhoneIcon, MailIcon, MessageIcon } from '@/components/ui/Icons'
 
 export const metadata = {
-  title: 'Контакты FORBSA — офис и производство в Екатеринбурге',
+  title: 'Контакты FORBSA — офис и производство в Москве',
   description:
     'Свяжитесь с FORBSA: офис и производство в Москве. Телефон, email, форма обратной связи, реквизиты ООО «Форбса». Отвечаем в течение рабочего дня.',
 }
@@ -106,34 +106,6 @@ export default function ContactsPage() {
                       Для заявок и документов
                     </div>
                   </Card>
-
-                  {/* МЕССЕНДЖЕРЫ */}
-                  <Card>
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 p-2 text-accent">
-                      <MessageIcon />
-                    </div>
-                    <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
-                      Мессенджеры
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <a
-                        href="https://wa.me/73430000000"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-xl bg-graphite px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-accent"
-                      >
-                        WhatsApp
-                      </a>
-                      <a
-                        href="https://t.me/forbsa"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-xl bg-graphite px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-accent"
-                      >
-                        Telegram
-                      </a>
-                    </div>
-                  </Card>
                 </div>
               </Reveal>
             </div>
@@ -143,7 +115,7 @@ export default function ContactsPage() {
               <Reveal delay={150}>
                 <div className="overflow-hidden rounded-2xl border border-line">
                   <iframe
-                    src="https://yandex.ru/maps/-/CTt1jEpY"
+                    src="https://yandex.ru/map-widget/v1/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%201-%D0%B9%20%D0%9D%D0%B0%D0%B3%D0%B0%D1%82%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BF%D1%80%D0%BE%D0%B5%D0%B7%D0%B4%2C%202%20%D1%81%D1%82%D1%80.%2012&z=16"
                     width="100%"
                     height="560"
                     frameBorder="0"
@@ -223,7 +195,6 @@ export default function ContactsPage() {
                     <div className="font-semibold text-accent">Отвечаем быстро</div>
                     <div className="mt-1 text-white/70">
                       Заявки с сайта обрабатываются в течение 1 рабочего дня.
-                      Срочные вопросы — в WhatsApp или Telegram.
                     </div>
                   </div>
                 </div>

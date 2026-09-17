@@ -209,7 +209,7 @@ export interface Product {
   package?: string | null;
   recommendation?: string | null;
   compatibleProfiles?: string | null;
-  images?: (number | null) | Media;
+  images?: (number | Media)[] | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
   sortOrder?: number | null;
