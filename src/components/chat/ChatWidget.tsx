@@ -34,7 +34,7 @@ export default function ChatWidget() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
   }, [msgs, leadOpen, leadSent])
 
-  if (pathname?.startsWith('/admin')) return null
+  if (pathname?.startsWith('/cp-7k2f9x')) return null
 
   async function send() {
     const text = input.trim()

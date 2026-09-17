@@ -39,6 +39,9 @@ export default buildConfig({
       beforeDashboard: ['/components/admin/Welcome#Welcome'],
     },
   },
+  routes: {
+    admin: '/cp-7k2f9x',
+  },
   collections: [
     Users,
     Media,

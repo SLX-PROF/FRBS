@@ -1,12 +1,12 @@
 // Панель быстрого доступа над дашбордом админки.
 
 const links = [
-  { href: '/admin/collections/leads', label: 'Заявки' },
-  { href: '/admin/collections/deals', label: 'Сделки' },
-  { href: '/admin/collections/activities', label: 'Задачи' },
-  { href: '/admin/collections/companies', label: 'Компании' },
-  { href: '/admin/collections/chat-sessions', label: 'Диалоги с ботом' },
-  { href: '/admin/globals/company-profile', label: 'Реквизиты' },
+  { href: '/cp-7k2f9x/collections/leads', label: 'Заявки' },
+  { href: '/cp-7k2f9x/collections/deals', label: 'Сделки' },
+  { href: '/cp-7k2f9x/collections/activities', label: 'Задачи' },
+  { href: '/cp-7k2f9x/collections/companies', label: 'Компании' },
+  { href: '/cp-7k2f9x/collections/chat-sessions', label: 'Диалоги с ботом' },
+  { href: '/cp-7k2f9x/globals/company-profile', label: 'Реквизиты' },
 ]
 
 export function Welcome() {

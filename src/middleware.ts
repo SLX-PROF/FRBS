@@ -21,7 +21,8 @@ function unauthorized(realm: string) {
 
 const PREVIEW_COOKIE = 'forbsa_preview'
 
-// /admin — как раньше, отдельный Basic Auth пароль (ADMIN_BASIC_AUTH_*).
+// /cp-7k2f9x (админка, путь задан в payload.config.ts) — отдельный Basic Auth
+// пароль (ADMIN_BASIC_AUTH_*), сам путь просто неочевидный, а не секретный.
 // Остальной сайт — занавеска "в разработке" для всех, пока задан
 // SITE_PREVIEW_SECRET. Обойти её можно ссылкой ?preview=<секрет> — она ставит
 // куку на 30 дней и больше не спрашивает. Публичный релиз — просто убрать
@@ -29,7 +30,7 @@ const PREVIEW_COOKIE = 'forbsa_preview'
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/cp-7k2f9x')) {
     return checkAuth(request, process.env.ADMIN_BASIC_AUTH_USER, process.env.ADMIN_BASIC_AUTH_PASSWORD)
       ? NextResponse.next()
       : unauthorized('Admin')

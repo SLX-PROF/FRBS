@@ -11,12 +11,12 @@ Next.js + TypeScript + Tailwind CSS + Payload CMS 3 + PostgreSQL (Docker)
    (если контейнера нет: `docker run -d --name forbsa-db -e POSTGRES_USER=forbsa -e POSTGRES_PASSWORD=forbsa_dev_password -e POSTGRES_DB=forbsa -p 5432:5432 postgres:16`)
 2. `npm install`
 3. `cp .env.example .env`
-4. `npm run dev` → http://localhost:3000, админка: /admin
+4. `npm run dev` → http://localhost:3000, админка: /cp-7k2f9x
 
 ## Запуск в контейнерах (staging/prod)
 `docker compose up --build`
 Сайт: http://localhost:3000. База создаётся автоматически;
-при первом заходе на /admin зарегистрируйте администратора.
+при первом заходе на /cp-7k2f9x зарегистрируйте администратора.
 
 ## Деплой на сервер компании
 1. `git clone` проекта на сервер

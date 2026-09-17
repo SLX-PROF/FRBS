@@ -54,5 +54,5 @@ export function serverURL(): string {
 }
 
 export function adminLink(slug: string, id: string | number): string {
-  return `${serverURL()}/admin/collections/${slug}/${id}`
+  return `${serverURL()}/cp-7k2f9x/collections/${slug}/${id}`
 }
