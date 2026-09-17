@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { reindexOneProduct } from '../lib/ai/kb'
+import { isProductStaff, productStaffOnly } from '../lib/access'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -9,6 +10,15 @@ export const Products: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    // read публичный (каталог на сайте), но раздел меню виден только тем,
+    // кто товарами управляет — иначе Payload показал бы ссылку и менеджерам.
+    hidden: ({ user }) => !isProductStaff(user),
+  },
+  access: {
+    read: () => true,
+    create: productStaffOnly,
+    update: productStaffOnly,
+    delete: productStaffOnly,
   },
   hooks: {
     afterChange: [

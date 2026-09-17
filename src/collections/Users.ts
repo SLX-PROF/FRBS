@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminFieldOnly, adminOnly } from '../lib/access'
+import { hiddenFromNonOwner, isOwner, ownerFieldOnly, ownerOnly } from '../lib/access'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -8,13 +8,17 @@ export const Users: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'role', 'active'],
     group: 'Система',
+    hidden: hiddenFromNonOwner,
   },
   auth: true,
   access: {
+    // Публично для любого залогиненного — иначе выпадающие списки
+    // "Ответственный"/"Исполнитель" в Заявках/Сделках/Задачах опустеют
+    // для менеджеров и админа товаров.
     read: ({ req: { user } }) => Boolean(user),
-    create: adminOnly,
-    update: ({ req: { user }, id }) => (user as { role?: string })?.role === 'admin' || user?.id === id,
-    delete: adminOnly,
+    create: ownerOnly,
+    update: ({ req: { user }, id }) => isOwner(user as Parameters<typeof isOwner>[0]) || user?.id === id,
+    delete: ownerOnly,
   },
   fields: [
     { name: 'name', type: 'text', label: 'Имя', required: true },
@@ -25,10 +29,11 @@ export const Users: CollectionConfig = {
       required: true,
       defaultValue: 'manager',
       options: [
-        { label: 'Администратор', value: 'admin' },
+        { label: 'Владелец', value: 'owner' },
+        { label: 'Администратор (товары)', value: 'admin' },
         { label: 'Менеджер', value: 'manager' },
       ],
-      access: { update: adminFieldOnly },
+      access: { update: ownerFieldOnly },
     },
     {
       name: 'telegramChatId',

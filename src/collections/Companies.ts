@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnly, ownedOrUnassigned, staffOnly } from '../lib/access'
+import { ownedOrUnassigned, ownerOnly, staffOnly } from '../lib/access'
 import { syncFields } from './shared'
 
 export const Companies: CollectionConfig = {
@@ -14,7 +14,7 @@ export const Companies: CollectionConfig = {
     read: ownedOrUnassigned(),
     create: staffOnly,
     update: ownedOrUnassigned(),
-    delete: adminOnly,
+    delete: ownerOnly,
   },
   fields: [
     { name: 'name', type: 'text', label: 'Название', required: true },

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnly, ownedOrUnassigned } from '../lib/access'
+import { ownedOrUnassigned, ownerOnly } from '../lib/access'
 import { notifyNewLead, notifyLeadAssigned, relId } from '../lib/notifications'
 import { syncFields } from './shared'
 
@@ -15,7 +15,7 @@ export const Leads: CollectionConfig = {
     read: ownedOrUnassigned(),
     create: () => true, // публичные формы сайта
     update: ownedOrUnassigned(),
-    delete: adminOnly,
+    delete: ownerOnly,
   },
   hooks: {
     beforeChange: [

@@ -146,7 +146,7 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name: string;
-  role: 'admin' | 'manager';
+  role: 'owner' | 'admin' | 'manager';
   /**
    * Для уведомлений (этап SP3)
    */

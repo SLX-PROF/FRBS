@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { activityScope, adminOnly, staffOnly } from '../lib/access'
+import { activityScope, ownerOnly, staffOnly } from '../lib/access'
 import { notifyTaskAssigned, relId } from '../lib/notifications'
 
 export const Activities: CollectionConfig = {
@@ -14,7 +14,7 @@ export const Activities: CollectionConfig = {
     read: activityScope,
     create: staffOnly,
     update: activityScope,
-    delete: adminOnly,
+    delete: ownerOnly,
   },
   hooks: {
     beforeValidate: [

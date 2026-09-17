@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnly, staffOnly } from '../lib/access'
+import { ownerOnly, staffOnly } from '../lib/access'
 
 const deny = () => false
 
@@ -14,7 +14,7 @@ export const ChatSessions: CollectionConfig = {
     defaultColumns: ['id', 'lead', 'consent', 'lastAt'],
     group: 'CRM',
   },
-  access: { read: staffOnly, create: deny, update: deny, delete: adminOnly },
+  access: { read: staffOnly, create: deny, update: deny, delete: ownerOnly },
   fields: [
     // Непредсказуемый идентификатор для клиента (bearer). Числовой id
     // перечислим — по нему нельзя разрешать запись в чужую сессию.

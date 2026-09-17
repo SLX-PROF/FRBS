@@ -75,3 +75,18 @@ It only matters for bootstrapping a brand-new prod DB from scratch (see repo
 root README/CLAUDE notes); an already-running prod DB should apply this
 migration via `npx payload migrate` instead. Regenerate the snapshot from a
 dev DB that has this migration applied before bootstrapping a new environment.
+
+## `20260917_150000_users_role_owner_tier`
+
+`users.role` went from two tiers (`admin` = full access, `manager` = scoped
+CRM access) to three: `owner` (full access, renamed from the old `admin`),
+`admin` (new, narrow — only Товары/Медиа, see `src/lib/access.ts`), `manager`
+(unchanged). Enum values can't be renamed in place safely, so this recreates
+`enum_users_role` (rename old → create new with all 3 values → cast the
+column through `CASE ... WHEN 'admin' THEN 'owner'` → drop the old type).
+Every existing `role = 'admin'` row becomes `'owner'`, so nobody's access is
+silently downgraded — the new `'admin'` value starts unused, free to assign
+to whoever should be restricted to managing products. Idempotent (checks
+whether `'owner'` is already a valid enum label before touching anything).
+`scripts/bootstrap-schema.sql` is stale for this too (same caveat as above —
+it predates this migration and only matters for a from-scratch bootstrap).

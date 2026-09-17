@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnly } from '../lib/access'
+import { ownerOnly } from '../lib/access'
 
 const deny = () => false
 
@@ -12,7 +12,7 @@ export const KbChunks: CollectionConfig = {
     defaultColumns: ['source', 'refSlug', 'updatedAt'],
     group: 'Система',
   },
-  access: { read: adminOnly, create: deny, update: deny, delete: deny },
+  access: { read: ownerOnly, create: deny, update: deny, delete: deny },
   fields: [
     { name: 'source', type: 'text', admin: { readOnly: true } },
     { name: 'refId', type: 'number', admin: { readOnly: true } },

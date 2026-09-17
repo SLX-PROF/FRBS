@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { hiddenFromNonOwner, ownerOnly } from '../lib/access'
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
@@ -6,6 +7,13 @@ export const Documents: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'createdAt'],
+    hidden: hiddenFromNonOwner,
+  },
+  access: {
+    read: () => true,
+    create: ownerOnly,
+    update: ownerOnly,
+    delete: ownerOnly,
   },
   fields: [
     { name: 'title', type: 'text', label: 'Название', required: true },

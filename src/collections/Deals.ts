@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnly, ownedOnly, staffOnly } from '../lib/access'
+import { ownedOnly, ownerOnly, staffOnly } from '../lib/access'
 import { notifyStageChange } from '../lib/notifications'
 import { syncFields } from './shared'
 
@@ -15,7 +15,7 @@ export const Deals: CollectionConfig = {
     read: ownedOnly(),
     create: staffOnly,
     update: ownedOnly(),
-    delete: adminOnly,
+    delete: ownerOnly,
   },
   hooks: {
     afterChange: [

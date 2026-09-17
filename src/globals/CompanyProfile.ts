@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { adminOnly, staffOnly } from '../lib/access'
+import { ownerOnly, staffOnly } from '../lib/access'
 
 // Реквизиты продавца для КП и других документов. Значения — заглушки,
 // требуют заполнения реальными данными ООО «Форбса».
@@ -7,7 +7,7 @@ export const CompanyProfile: GlobalConfig = {
   slug: 'company-profile',
   label: 'Реквизиты компании',
   admin: { group: 'Система' },
-  access: { read: staffOnly, update: adminOnly },
+  access: { read: staffOnly, update: ownerOnly },
   fields: [
     { name: 'legalName', type: 'text', label: 'Юр. наименование', defaultValue: 'ООО «Форбса»' },
     {
