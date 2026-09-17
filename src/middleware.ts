@@ -19,24 +19,45 @@ function unauthorized(realm: string) {
   })
 }
 
-// Пока сайт не в релизе — Basic Auth на весь сайт (SITE_BASIC_AUTH_*).
-// Гейт снимается сам, как только эти две переменные убрать из .env — код
-// менять не нужно. /admin поверх этого по-прежнему защищён отдельным паролем
-// (ADMIN_BASIC_AUTH_*), так что превью-пароль не даёт доступа в CMS.
+const PREVIEW_COOKIE = 'forbsa_preview'
+
+// /admin — как раньше, отдельный Basic Auth пароль (ADMIN_BASIC_AUTH_*).
+// Остальной сайт — занавеска "в разработке" для всех, пока задан
+// SITE_PREVIEW_SECRET. Обойти её можно ссылкой ?preview=<секрет> — она ставит
+// куку на 30 дней и больше не спрашивает. Публичный релиз — просто убрать
+// SITE_PREVIEW_SECRET из .env и перезапустить контейнер, код не трогать.
 export function middleware(request: NextRequest) {
-  const siteUser = process.env.SITE_BASIC_AUTH_USER
-  const sitePass = process.env.SITE_BASIC_AUTH_PASSWORD
-  if (siteUser && sitePass && !checkAuth(request, siteUser, sitePass)) {
-    return unauthorized('Site')
+  const { pathname, searchParams } = request.nextUrl
+
+  if (pathname.startsWith('/admin')) {
+    return checkAuth(request, process.env.ADMIN_BASIC_AUTH_USER, process.env.ADMIN_BASIC_AUTH_PASSWORD)
+      ? NextResponse.next()
+      : unauthorized('Admin')
   }
 
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!checkAuth(request, process.env.ADMIN_BASIC_AUTH_USER, process.env.ADMIN_BASIC_AUTH_PASSWORD)) {
-      return unauthorized('Admin')
-    }
+  const previewSecret = process.env.SITE_PREVIEW_SECRET
+  if (!previewSecret) return NextResponse.next()
+
+  const paramSecret = searchParams.get('preview')
+  if (paramSecret === previewSecret) {
+    const url = request.nextUrl.clone()
+    url.searchParams.delete('preview')
+    const response = NextResponse.redirect(url)
+    response.cookies.set(PREVIEW_COOKIE, previewSecret, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 30,
+    })
+    return response
   }
 
-  return NextResponse.next()
+  if (request.cookies.get(PREVIEW_COOKIE)?.value === previewSecret) {
+    return NextResponse.next()
+  }
+
+  if (pathname === '/coming-soon') return NextResponse.next()
+
+  return NextResponse.rewrite(new URL('/coming-soon', request.url))
 }
 
 export const config = {
