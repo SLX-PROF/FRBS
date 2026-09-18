@@ -13,6 +13,7 @@ export type RecoProduct = {
   minDoorWidth?: number | null
   features?: string | null
   sortOrder?: number | null
+  images?: ({ url?: string | null; alt?: string | null } | number)[] | null
 }
 
 export type Reco = {

@@ -28,6 +28,7 @@ export default async function CalculatorPage() {
     minDoorWidth: p.minDoorWidth ?? null,
     features: p.features ?? null,
     sortOrder: p.sortOrder ?? null,
+    images: p.images,
   }))
 
   return (

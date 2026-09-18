@@ -77,7 +77,15 @@ function ModelCard({ p, primary = false }: { p: RecoProduct; primary?: boolean }
       }`}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface transition-transform duration-500 group-hover:scale-105">
-        <ProfileGlyph variant={((p.id ?? 0) % 3) as 0 | 1 | 2} />
+        {typeof p.images?.[0] === 'object' && p.images[0]?.url ? (
+          <img
+            src={p.images[0].url}
+            alt={p.images[0].alt || p.title}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <ProfileGlyph variant={((p.id ?? 0) % 3) as 0 | 1 | 2} />
+        )}
         {p.series && (
           <div className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-white">
             {p.series}

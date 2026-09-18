@@ -12,6 +12,7 @@ import CountUp from '@/components/motion/CountUp'
 import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import ProfileGlyph from '@/components/ui/ProfileGlyph'
+import { getAllProducts } from '@/lib/products'
 import {
   ArchitectIcon,
   DealerIcon,
@@ -31,6 +32,10 @@ export const metadata = {
   description:
     'Российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, 10 моделей. Для архитекторов, дилеров и монтажников.',
 }
+
+// Обращается к БД на каждый запрос (превью каталога) — при сборке в Docker
+// живой БД нет, поэтому страница не может быть prerendered статически.
+export const dynamic = 'force-dynamic'
 
 const audience = [
   {
@@ -59,12 +64,6 @@ const audience = [
   },
 ]
 
-const catalogPreview = [
-  { name: 'Forbsa TT', type: 'Врезной', width: 'от 200 мм' },
-  { name: 'Forbsa Aluma', type: 'Врезной', width: 'от 800 мм' },
-  { name: 'Forbsa OMEGA', type: 'Врезной', width: 'от 400 мм' },
-]
-
 const tech = [
   { title: 'Нержавейка A2', desc: 'AISI 304 — коррозионная стойкость', Icon: SteelIcon },
   { title: 'Самовыравнивание', desc: 'Компенсация неровностей пола', Icon: LevelIcon },
@@ -74,7 +73,10 @@ const tech = [
   { title: '8 факторов защиты', desc: 'Дым, шум, холод, свет, пыль и др.', Icon: ShieldIcon },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProducts()
+  const catalogPreview = products.slice(0, 3)
+
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
@@ -328,20 +330,32 @@ export default function Home() {
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {catalogPreview.map((p, i) => (
-              <Reveal key={p.name} delay={i * 100}>
+              <Reveal key={p.id} delay={i * 100}>
                 <Card
-                  href={`/catalog/${p.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`/catalog/${p.slug}`}
                   className="group flex h-full flex-col overflow-hidden p-0"
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-surface transition-transform duration-500 group-hover:scale-105">
-                    <ProfileGlyph variant={(i % 3) as 0 | 1 | 2} />
+                    {typeof p.images?.[0] === 'object' && p.images[0]?.url ? (
+                      <img
+                        src={p.images[0].url}
+                        alt={p.images[0].alt || p.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <ProfileGlyph variant={(i % 3) as 0 | 1 | 2} />
+                    )}
                   </div>
                   <div className="flex flex-1 flex-col p-6">
                     <div className="text-xs font-semibold uppercase tracking-wider text-accent">
-                      {p.type}
+                      {p.type === 'врезной' ? 'Врезной' : 'Накладной'}
                     </div>
-                    <h3 className="mt-2 text-xl font-bold">{p.name}</h3>
-                    <p className="mt-2 text-sm text-ink-muted">Мин. ширина двери · {p.width}</p>
+                    <h3 className="mt-2 text-xl font-bold">{p.title}</h3>
+                    {p.minDoorWidth && (
+                      <p className="mt-2 text-sm text-ink-muted">
+                        Мин. ширина двери · от {p.minDoorWidth} мм
+                      </p>
+                    )}
                     <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-transform group-hover:gap-3">
                       Подробнее →
                     </div>
