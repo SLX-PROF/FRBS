@@ -27,15 +27,17 @@ import {
   CertificateIcon,
 } from '@/components/ui/Icons'
 
-export const metadata = {
-  title: 'FORBSA — автоматические пороги для дверей. Производство от 1 дня',
-  description:
-    'Российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, 10 моделей. Для архитекторов, дилеров и монтажников.',
-}
-
 // Обращается к БД на каждый запрос (превью каталога) — при сборке в Docker
 // живой БД нет, поэтому страница не может быть prerendered статически.
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata() {
+  const products = await getAllProducts()
+  return {
+    title: 'FORBSA — автоматические пороги для дверей. Производство от 1 дня',
+    description: `Российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, ${products.length} моделей. Для архитекторов, дилеров и монтажников.`,
+  }
+}
 
 const audience = [
   {
@@ -317,7 +319,7 @@ export default async function Home() {
             <div className="mb-12 flex items-end justify-between">
               <SectionHeading
                 title="Линейка продукции"
-                subtitle="10 моделей под любые задачи — от жилых объектов до противопожарных дверей"
+                subtitle={`${products.length} моделей под любые задачи — от жилых объектов до противопожарных дверей`}
               />
               <Link
                 href="/catalog"

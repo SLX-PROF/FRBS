@@ -9,13 +9,16 @@ import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import CatalogClient from './CatalogClient'
 
-export const metadata = {
-  title: 'Каталог автоматических порогов FORBSA — 10 моделей',
-  description:
-    'Врезные и накладные автоматические пороги FORBSA. 10 моделей для алюминиевых, стальных, ПВХ и деревянных дверей. Шаг длины 200 мм.',
-}
-
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata() {
+  const payload = await getPayload({ config: configPromise })
+  const { totalDocs } = await payload.find({ collection: 'products', limit: 0 })
+  return {
+    title: `Каталог автоматических порогов FORBSA — ${totalDocs} моделей`,
+    description: `Врезные и накладные автоматические пороги FORBSA. ${totalDocs} моделей для алюминиевых, стальных, ПВХ и деревянных дверей. Шаг длины 200 мм.`,
+  }
+}
 
 export default async function CatalogPage() {
   const payload = await getPayload({ config: configPromise })
@@ -35,7 +38,7 @@ export default async function CatalogPage() {
       <section className="bg-graphite py-20 text-white md:py-20">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <Tag tone="dark">10 моделей в линейке</Tag>
+            <Tag tone="dark">{docs.length} моделей в линейке</Tag>
           </Reveal>
           <Reveal delay={100}>
             <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
