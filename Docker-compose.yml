@@ -15,7 +15,7 @@ services:
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER:-forbsa}:${POSTGRES_PASSWORD:-forbsa_dev_password}@db:5432/${POSTGRES_DB:-forbsa}
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       - db
     volumes:

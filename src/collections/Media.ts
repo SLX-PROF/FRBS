@@ -25,6 +25,8 @@ export const Media: CollectionConfig = {
   ],
   upload: {
     staticDir: path.resolve(__dirname, '../../public/media'),
-    mimeTypes: ['image/*', 'application/pdf', 'application/octet-stream'],
+    // Без application/octet-stream — этот MIME клиент может проставить
+    // любому файлу, и он фактически снимал ограничение целиком.
+    mimeTypes: ['image/*', 'application/pdf', 'application/zip', 'video/mp4'],
   },
 }
