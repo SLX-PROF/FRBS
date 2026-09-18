@@ -1,3 +1,5 @@
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
@@ -7,6 +9,9 @@ import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
 import { BookIcon, CertificateIcon, WrenchIcon, ScaleIcon } from '@/components/ui/Icons'
 import type { ComponentType } from 'react'
+import type { Document as DocDoc, Media } from '@/payload-types'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Документация FORBSA — сертификаты, альбом узлов, инструкции',
@@ -14,168 +19,66 @@ export const metadata = {
     'Сертификаты РОСТЕСТ, альбом типовых технических решений, BIM-модели, инструкции по монтажу. Всё для архитекторов, проектировщиков и монтажников.',
 }
 
-type DocItem = {
-  title: string
-  desc: string
-  format: string
-  size: string
-  href: string
-  badge?: string
-}
-
-type DocCategory = {
-  id: string
-  title: string
-  desc: string
-  Icon: ComponentType<{ className?: string }>
-  items: DocItem[]
-}
-
-const categories: DocCategory[] = [
-  {
-    id: 'album',
-    title: 'Альбом типовых технических решений',
-    desc: 'Основной документ для проектировщиков. Узлы примыкания, спецификации, готовые формулировки для ТЗ.',
-    Icon: BookIcon,
-    items: [
-      {
-        title: 'Альбом ТТР FORBSA (полная версия)',
-        desc: '20+ узлов примыкания для алюминиевых, стальных, ПВХ и деревянных дверей. Спецификации, чертежи, примеры в проектах.',
-        format: 'PDF',
-        size: '12 МБ',
-        href: '/docs/forbsa-album-ttr.pdf',
-        badge: 'Главный документ',
-      },
-      {
-        title: 'Узлы для противопожарных дверей',
-        desc: 'Отдельный раздел для EI30/EI60 дверей. Соответствие СП 1.13130 и СП 4.13130.',
-        format: 'PDF',
-        size: '4 МБ',
-        href: '/docs/forbsa-fire-doors.pdf',
-      },
-      {
-        title: 'BIM-модели (Revit + IFC)',
-        desc: 'Семейства для Revit 2022+, IFC-файлы для ArchiCAD и других BIM-систем.',
-        format: 'RVT / IFC',
-        size: '8 МБ',
-        href: '/docs/forbsa-bim.zip',
-        badge: 'Для архитекторов',
-      },
-    ],
-  },
-  {
-    id: 'certs',
+const categoryMeta: Record<string, { title: string; desc: string; Icon: ComponentType<{ className?: string }> }> = {
+  certificates: {
     title: 'Сертификаты и протоколы',
     desc: 'Подтверждённое качество и соответствие российским стандартам.',
     Icon: CertificateIcon,
-    items: [
-      {
-        title: 'Сертификат РОСТЕСТ',
-        desc: 'Сертификат соответствия требованиям технических регламентов РФ.',
-        format: 'PDF',
-        size: '1.2 МБ',
-        href: '/docs/forbsa-rostest.pdf',
-        badge: 'РОСТЕСТ',
-      },
-      {
-        title: 'Протокол испытаний на 1 000 000 циклов',
-        desc: 'Подтверждённый ресурс механизма. Испытания в аккредитованной лаборатории.',
-        format: 'PDF',
-        size: '2.5 МБ',
-        href: '/docs/forbsa-protocol-1m.pdf',
-      },
-      {
-        title: 'Протокол звукоизоляции (44–48 дБ)',
-        desc: 'Соответствие СП 51.13330.2011 «Защита от шума».',
-        format: 'PDF',
-        size: '1.8 МБ',
-        href: '/docs/forbsa-soundproof.pdf',
-      },
-      {
-        title: 'Протокол теплозащиты',
-        desc: 'Соответствие СП 50.13330.2012 «Тепловая защита зданий».',
-        format: 'PDF',
-        size: '1.5 МБ',
-        href: '/docs/forbsa-thermal.pdf',
-      },
-      {
-        title: 'Соответствие ГОСТ 31173-2016',
-        desc: 'Блоки дверные металлические. Воздухо- и водопроницаемость.',
-        format: 'PDF',
-        size: '1.3 МБ',
-        href: '/docs/forbsa-gost.pdf',
-      },
-    ],
   },
-  {
-    id: 'instructions',
+  drawings: {
+    title: 'Чертежи и альбом ТТР',
+    desc: 'Узлы примыкания, спецификации, готовые формулировки для ТЗ.',
+    Icon: BookIcon,
+  },
+  bim: {
+    title: 'BIM-модели',
+    desc: 'Семейства для Revit, IFC-файлы для ArchiCAD и других BIM-систем.',
+    Icon: BookIcon,
+  },
+  instructions: {
     title: 'Инструкции по монтажу',
-    desc: 'Пошаговые руководства для монтажников. Видео и PDF.',
+    desc: 'Пошаговые руководства для монтажников.',
     Icon: WrenchIcon,
-    items: [
-      {
-        title: 'Инструкция по монтажу врезных порогов',
-        desc: 'Модели TT, Aluma, XRAY, ALLSIZE, UNIFIX, SMART, OMEGA, Mini, Flat.',
-        format: 'PDF',
-        size: '3 МБ',
-        href: '/docs/forbsa-install-recessed.pdf',
-      },
-      {
-        title: 'Инструкция по монтажу накладных порогов',
-        desc: 'Модель Flush — установка без фрезеровки.',
-        format: 'PDF',
-        size: '2 МБ',
-        href: '/docs/forbsa-install-flush.pdf',
-      },
-      {
-        title: 'Видео: установка порога за 3 минуты',
-        desc: 'Пошаговая видеоинструкция от инженера FORBSA.',
-        format: 'MP4',
-        size: '45 МБ',
-        href: '/docs/forbsa-install-video.mp4',
-        badge: 'Видео',
-      },
-      {
-        title: 'Регулировка выпада (до 18 мм)',
-        desc: 'Как настроить расстояние выпада шестигранником.',
-        format: 'PDF',
-        size: '800 КБ',
-        href: '/docs/forbsa-adjustment.pdf',
-      },
-    ],
   },
-  {
-    id: 'legal',
+  legal: {
     title: 'Юридические документы',
     desc: 'Политики, согласия, реквизиты.',
     Icon: ScaleIcon,
-    items: [
-      {
-        title: 'Политика конфиденциальности',
-        desc: 'Порядок обработки персональных данных на сайте.',
-        format: 'PDF',
-        size: '250 КБ',
-        href: '/docs/forbsa-privacy.pdf',
-      },
-      {
-        title: 'Согласие на обработку персональных данных',
-        desc: 'Форма согласия для клиентов.',
-        format: 'PDF',
-        size: '180 КБ',
-        href: '/docs/forbsa-consent.pdf',
-      },
-      {
-        title: 'Реквизиты компании',
-        desc: 'Полные реквизиты ООО «Форбса» для договоров.',
-        format: 'PDF',
-        size: '120 КБ',
-        href: '/docs/forbsa-requisites.pdf',
-      },
-    ],
   },
-]
+}
 
-export default function DocsPage() {
+const categoryOrder = ['drawings', 'bim', 'certificates', 'instructions', 'legal']
+
+function formatFromFilename(filename?: string | null): string {
+  const ext = filename?.split('.').pop()?.toUpperCase()
+  return ext || 'Файл'
+}
+
+function formatSize(bytes?: number | null): string {
+  if (!bytes) return ''
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} КБ`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`
+}
+
+export default async function DocsPage() {
+  const payload = await getPayload({ config: configPromise })
+  const { docs } = await payload.find({
+    collection: 'documents',
+    limit: 200,
+    depth: 1,
+    sort: 'category',
+  })
+
+  const byCategory = new Map<string, DocDoc[]>()
+  for (const doc of docs as DocDoc[]) {
+    const cat = doc.category ?? 'legal'
+    if (!byCategory.has(cat)) byCategory.set(cat, [])
+    byCategory.get(cat)!.push(doc)
+  }
+  const categories = categoryOrder
+    .filter((id) => byCategory.has(id))
+    .map((id) => ({ id, items: byCategory.get(id)!, ...categoryMeta[id] }))
+
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
@@ -191,9 +94,7 @@ export default function DocsPage() {
           <Reveal delay={100}>
             <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
               Документация{' '}
-              <span className="text-accent">
-                FORBSA
-              </span>
+              <span className="text-accent">FORBSA</span>
             </h1>
           </Reveal>
           <Reveal delay={200}>
@@ -204,87 +105,97 @@ export default function DocsPage() {
             </p>
           </Reveal>
 
-          {/* Быстрые ссылки */}
-          <Reveal delay={300}>
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {categories.map((c) => (
-                <a
-                  key={c.id}
-                  href={`#${c.id}`}
-                  className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/10"
-                >
-                  <c.Icon className="h-4 w-4 flex-shrink-0" />
-                  <span className="truncate">{c.title.split(' ').slice(0, 2).join(' ')}</span>
-                </a>
-              ))}
-            </div>
-          </Reveal>
+          {categories.length > 0 && (
+            <Reveal delay={300}>
+              <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {categories.map((c) => (
+                  <a
+                    key={c.id}
+                    href={`#${c.id}`}
+                    className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/10"
+                  >
+                    <c.Icon className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">{c.title.split(' ').slice(0, 2).join(' ')}</span>
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 
       {/* КАТЕГОРИИ ДОКУМЕНТОВ */}
       <section className="py-20">
         <div className="mx-auto max-w-[1440px] px-6">
-          <div className="space-y-16">
-            {categories.map((cat) => (
-              <div key={cat.id} id={cat.id} className="scroll-mt-20">
-                <Reveal>
-                  <div className="mb-8 flex items-start gap-4">
-                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-accent/10 p-3.5 text-accent">
-                      <cat.Icon />
+          {categories.length === 0 ? (
+            <div className="rounded-2xl border border-line bg-white p-12 text-center text-ink-muted">
+              Документы ещё не загружены. Добавьте их в админке: раздел «Документы».
+            </div>
+          ) : (
+            <div className="space-y-16">
+              {categories.map((cat) => (
+                <div key={cat.id} id={cat.id} className="scroll-mt-20">
+                  <Reveal>
+                    <div className="mb-8 flex items-start gap-4">
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-accent/10 p-3.5 text-accent">
+                        <cat.Icon />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                          {cat.title}
+                        </h2>
+                        <p className="mt-1 text-ink-muted">{cat.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
-                        {cat.title}
-                      </h2>
-                      <p className="mt-1 text-ink-muted">{cat.desc}</p>
-                    </div>
+                  </Reveal>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {cat.items.map((item, i) => {
+                      const file = typeof item.file === 'object' ? (item.file as Media) : null
+                      const format = formatFromFilename(file?.filename)
+                      const size = formatSize(file?.filesize)
+                      return (
+                        <Reveal key={item.id} delay={i * 80}>
+                          <a
+                            href={file?.url || '#'}
+                            download
+                            className="group flex h-full items-start gap-4 rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
+                          >
+                            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-graphite text-xs font-bold uppercase text-white">
+                              {format}
+                            </div>
+
+                            <div className="flex h-full flex-1 flex-col">
+                              <h3 className="font-semibold transition-colors group-hover:text-accent">
+                                {item.title}
+                              </h3>
+                              {item.description && (
+                                <p className="mt-1 flex-1 text-sm text-ink-muted">
+                                  {item.description}
+                                </p>
+                              )}
+                              <div className="mt-3 flex items-center gap-3 text-xs text-ink-muted">
+                                <span>{format}</span>
+                                {size && (
+                                  <>
+                                    <span>·</span>
+                                    <span>{size}</span>
+                                  </>
+                                )}
+                                <span className="ml-auto inline-flex items-center gap-1 font-semibold text-accent transition-all group-hover:gap-2">
+                                  Скачать →
+                                </span>
+                              </div>
+                            </div>
+                          </a>
+                        </Reveal>
+                      )
+                    })}
                   </div>
-                </Reveal>
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  {cat.items.map((item, i) => (
-                    <Reveal key={item.title} delay={i * 80}>
-                      <a
-                        href={item.href}
-                        download
-                        className="group flex h-full items-start gap-4 rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
-                      >
-                        {/* Иконка формата */}
-                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-graphite text-xs font-bold uppercase text-white">
-                          {item.format}
-                        </div>
-
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-semibold transition-colors group-hover:text-accent">
-                              {item.title}
-                            </h3>
-                            {item.badge && (
-                              <span className="flex-shrink-0 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent">
-                                {item.badge}
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-1 text-sm text-ink-muted">
-                            {item.desc}
-                          </p>
-                          <div className="mt-3 flex items-center gap-3 text-xs text-ink-muted">
-                            <span>{item.format}</span>
-                            <span>·</span>
-                            <span>{item.size}</span>
-                            <span className="ml-auto inline-flex items-center gap-1 font-semibold text-accent transition-all group-hover:gap-2">
-                              Скачать →
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                    </Reveal>
-                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
