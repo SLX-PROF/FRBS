@@ -18,6 +18,9 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    volumes:
+      - media:/app/public/media
 
 volumes:
   pgdata:
+  media:
