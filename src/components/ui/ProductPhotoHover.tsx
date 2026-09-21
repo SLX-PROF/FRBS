@@ -26,7 +26,7 @@ export default function ProductPhotoHover({
     if (photos.length < 2 || timer.current) return
     timer.current = setInterval(() => {
       setIndex((i) => (i + 1) % photos.length)
-    }, 1200)
+    }, 2800)
   }
 
   const stop = () => {
