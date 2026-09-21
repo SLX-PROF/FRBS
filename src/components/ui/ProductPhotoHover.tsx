@@ -22,6 +22,13 @@ export default function ProductPhotoHover({
   const [index, setIndex] = useState(0)
   const timer = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  const stopTimer = () => {
+    if (timer.current) {
+      clearInterval(timer.current)
+      timer.current = null
+    }
+  }
+
   const start = () => {
     if (photos.length < 2 || timer.current) return
     timer.current = setInterval(() => {
@@ -30,11 +37,15 @@ export default function ProductPhotoHover({
   }
 
   const stop = () => {
-    if (timer.current) {
-      clearInterval(timer.current)
-      timer.current = null
-    }
+    stopTimer()
     setIndex(0)
+  }
+
+  const pick = (e: React.MouseEvent, i: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    stopTimer()
+    setIndex(i)
   }
 
   if (photos.length === 0) {
@@ -57,6 +68,22 @@ export default function ProductPhotoHover({
           }`}
         />
       ))}
+      {photos.length > 1 && (
+        <div className="absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={(e) => pick(e, i)}
+              aria-label={`Показать фото ${i + 1}`}
+              aria-current={i === index}
+              className={`h-1.5 rounded-full shadow-sm transition-all ${
+                i === index ? 'w-4 bg-accent' : 'w-1.5 bg-white/80 hover:bg-white'
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
