@@ -45,14 +45,14 @@ export default function Preloader() {
             }`}
           />
         </div>
-        <span
-          className={`font-display text-4xl font-semibold tracking-[0.18em] text-white transition-all duration-700 ease-soft md:text-5xl ${
+        <img
+          src="/logo.png"
+          alt="FORBSA"
+          className={`h-10 w-auto transition-all duration-700 ease-soft md:h-12 ${
             sealed ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
           }`}
           style={{ transitionDelay: '300ms' }}
-        >
-          FORBSA
-        </span>
+        />
       </div>
     </div>
   )

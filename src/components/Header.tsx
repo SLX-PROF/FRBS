@@ -35,8 +35,8 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-4 text-white md:px-6">
-        <Link href="/" onClick={closeAll} className="font-display text-2xl font-semibold tracking-tight">
-          FORBSA<span className="text-accent">.</span>
+        <Link href="/" onClick={closeAll} className="flex-shrink-0">
+          <img src="/logo.png" alt="FORBSA" className="h-7 w-auto md:h-8" />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

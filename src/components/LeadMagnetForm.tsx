@@ -41,7 +41,7 @@ export default function LeadMagnetForm() {
       trackGoal('lead_submit')
       setState('ok')
     } else {
-      setError('Не удалось отправить. Попробуйте ещё раз или напишите на info@forbsa.ru.')
+      setError('Не удалось отправить. Попробуйте ещё раз или напишите на sales@forbsa.ru.')
       setState('error')
     }
   }

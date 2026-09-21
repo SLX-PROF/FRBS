@@ -9,7 +9,7 @@ const nav = [
   { href: '/contacts', label: 'Контакты' },
 ]
 
-const legal = [{ href: '/privacy', label: 'Политика обработки ПДн' }]
+const legal = [{ href: '/privacy', label: 'Политика конфиденциальности' }]
 
 export default function Footer() {
   return (
@@ -56,7 +56,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-2.5">
               <MailIcon className="h-4 w-4 flex-shrink-0 text-accent" />
-              <a href="mailto:info@forbsa.ru" className="transition-colors hover:text-accent">
+              <a href="mailto:sales@forbsa.ru" className="transition-colors hover:text-accent">
                 sales@forbsa.ru
               </a>
             </li>

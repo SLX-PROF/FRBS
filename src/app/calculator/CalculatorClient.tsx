@@ -118,7 +118,7 @@ export default function CalculatorClient({ products }: { products: RecoProduct[]
   const taskNote = tasks.find((t) => t.key === task)!.note
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,360px)_1fr]">
+    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,360px)_1fr]">
       {/* ПАРАМЕТРЫ */}
       <div className="h-fit rounded-panel border border-line bg-white p-6 lg:sticky lg:top-24">
         <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">Параметры двери</div>

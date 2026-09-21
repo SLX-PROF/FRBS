@@ -47,7 +47,7 @@ export default function LeadForm() {
       trackGoal('lead_submit')
       setState('ok')
     } else {
-      setError('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам на info@forbsa.ru.')
+      setError('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам на sales@forbsa.ru.')
       setState('error')
     }
   }
