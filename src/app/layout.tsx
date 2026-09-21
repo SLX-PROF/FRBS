@@ -1,6 +1,7 @@
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Preloader from '@/components/motion/Preloader'
 import ChatWidget from '@/components/chat/ChatWidget'
+import CookieConsent from '@/components/CookieConsent'
 import type { Metadata } from 'next'
 import './globals.css'
 import Metrika from '@/components/Metrika'
@@ -24,6 +25,7 @@ export default function RootLayout({
         <ScrollProgress />
         {children}
         <ChatWidget />
+        <CookieConsent />
       </body>
     </html>
   )

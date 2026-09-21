@@ -1,8 +1,20 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import { METRIKA_ID } from '@/lib/metrika'
+import { hasConsent, onConsentGiven } from '@/lib/cookieConsent'
 
 export default function Metrika() {
-  if (!METRIKA_ID) return null
+  const [allowed, setAllowed] = useState(false)
+
+  useEffect(() => {
+    setAllowed(hasConsent())
+    return onConsentGiven(() => setAllowed(true))
+  }, [])
+
+  if (!METRIKA_ID || !allowed) return null
+
   return (
     <>
       <Script id="metrika-loader" strategy="afterInteractive" src="https://mc.yandex.ru/metrika/tag.js" />
