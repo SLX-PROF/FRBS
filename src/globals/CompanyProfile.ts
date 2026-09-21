@@ -22,7 +22,7 @@ export const CompanyProfile: GlobalConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'phone', type: 'text', label: 'Телефон', defaultValue: '+7 (343) 000-00-00' },
+        { name: 'phone', type: 'text', label: 'Телефон', defaultValue: '+7 (495) 798-52-25' },
         { name: 'email', type: 'text', label: 'Email', defaultValue: 'info@forbsa.ru' },
       ],
     },

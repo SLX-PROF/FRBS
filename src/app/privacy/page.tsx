@@ -59,7 +59,7 @@ export default function PrivacyPage() {
         <Section n="2" title="Оператор">
           <p>
             ООО «Форбса», г. Екатеринбург, ул. Производственная, 1.
-            Эл. почта: info@forbsa.ru. Телефон: +7 (343) 000-00-00.
+            Эл. почта: info@forbsa.ru. Телефон: +7 (495) 798-52-25.
             <span className="italic"> (ИНН, ОГРН и адрес — уточнить.)</span>
           </p>
         </Section>

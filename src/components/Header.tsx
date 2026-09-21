@@ -136,11 +136,11 @@ export default function Header() {
               Оставить заявку
             </Button>
             <a
-              href="tel:+73430000000"
+              href="tel:+74957985225"
               className="flex items-center justify-center gap-2 py-1 text-sm font-semibold text-white/70 transition-colors hover:text-white"
             >
               <PhoneIcon className="h-4 w-4" />
-              +7 (343) 000-00-00
+              +7 (495) 798-52-25
             </a>
           </div>
         </div>

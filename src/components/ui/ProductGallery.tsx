@@ -78,8 +78,8 @@ export default function ProductGallery({
               onClick={() => pick(i)}
               aria-label={`Показать фото ${i + 1}`}
               aria-current={i === index}
-              className={`h-2.5 rounded-full transition-all ${
-                i === index ? 'w-6 bg-accent' : 'w-2.5 bg-line hover:bg-accent/40'
+              className={`h-2.5 rounded-full ring-1 ring-inset ring-black/10 transition-all ${
+                i === index ? 'w-6 bg-accent ring-accent' : 'w-2.5 bg-line hover:bg-accent/40'
               }`}
             />
           ))}

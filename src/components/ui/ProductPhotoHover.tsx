@@ -77,8 +77,8 @@ export default function ProductPhotoHover({
               onClick={(e) => pick(e, i)}
               aria-label={`Показать фото ${i + 1}`}
               aria-current={i === index}
-              className={`h-1.5 rounded-full shadow-sm transition-all ${
-                i === index ? 'w-4 bg-accent' : 'w-1.5 bg-white/80 hover:bg-white'
+              className={`h-1.5 rounded-full ring-1 ring-inset ring-black/20 transition-all ${
+                i === index ? 'w-4 bg-accent ring-accent' : 'w-1.5 bg-white/90 hover:bg-white'
               }`}
             />
           ))}

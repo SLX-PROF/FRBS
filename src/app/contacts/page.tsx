@@ -78,13 +78,13 @@ export default function ContactsPage() {
                       Телефон
                     </div>
                     <a
-                      href="tel:+79661570386"
+                      href="tel:+74957985225"
                       className="mt-1 block text-xl font-bold transition-colors hover:text-accent"
                     >
-                      +7 (966) 157-03-86
+                      +7 (495) 798-52-25
                     </a>
                     <div className="mt-1 text-sm text-ink-muted">
-                      Пн–Пт, 9:00–18:00 (МСК+2)
+                      Пн–Пт, 9:00–18:00 (МСК)
                     </div>
                   </Card>
 
