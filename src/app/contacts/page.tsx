@@ -1,3 +1,5 @@
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
@@ -9,13 +11,32 @@ import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { MapPinIcon, PhoneIcon, MailIcon, MessageIcon } from '@/components/ui/Icons'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Контакты FORBSA — офис и производство в Москве',
   description:
     'Свяжитесь с FORBSA: офис и производство в Москве. Телефон, email, форма обратной связи, реквизиты ООО «Форбса». Отвечаем в течение рабочего дня.',
 }
 
-export default function ContactsPage() {
+export default async function ContactsPage() {
+  const payload = await getPayload({ config: configPromise })
+  const profile = await payload.findGlobal({ slug: 'company-profile' }).catch(() => null)
+
+  const requisites = [
+    { label: 'Наименование', value: profile?.legalName },
+    {
+      label: 'ИНН / КПП',
+      value: [profile?.inn, profile?.kpp].filter(Boolean).join(' / ') || undefined,
+    },
+    { label: 'ОГРН', value: profile?.ogrn },
+    { label: 'Юр. адрес', value: profile?.address },
+    { label: 'Р/с', value: profile?.account },
+    { label: 'Корр. счёт', value: profile?.corrAccount },
+    { label: 'Банк', value: profile?.bankName },
+    { label: 'БИК', value: profile?.bik },
+  ].filter((item): item is { label: string; value: string } => Boolean(item.value))
+
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
@@ -145,20 +166,18 @@ export default function ContactsPage() {
                   Реквизиты
                 </h2>
                 <div className="mt-6 space-y-3 text-sm">
-                  {[
-                    { label: 'Наименование', value: 'ООО «Форбса»' },
-                    { label: 'ИНН / КПП', value: ' 7724455291 / 772401001' },
-                    { label: 'ОГРН', value: '1187746833416' },
-                    { label: 'Юр. адрес', value: '117105, город Москва, 1-Й Нагатинский пр-д, д. 2 стр. 12, помещ. 2/2' },
-                    { label: 'Р/с', value: '=' },
-                    { label: 'Банк', value: ' АO "Альфа-Банк" , г. Москва' },
-                    { label: 'БИК', value: '044525593' },
-                  ].map((item) => (
-                    <div key={item.label} className="flex items-start justify-between gap-4 border-b border-white/10 pb-2">
-                      <span className="flex-shrink-0 text-white/50">{item.label}</span>
-                      <span className="min-w-0 break-words text-right font-medium">{item.value}</span>
-                    </div>
-                  ))}
+                  {requisites.length === 0 ? (
+                    <p className="text-white/50">
+                      Реквизиты ещё не заполнены — добавьте их в админке, раздел «Реквизиты компании».
+                    </p>
+                  ) : (
+                    requisites.map((item) => (
+                      <div key={item.label} className="flex items-start justify-between gap-4 border-b border-white/10 pb-2">
+                        <span className="flex-shrink-0 text-white/50">{item.label}</span>
+                        <span className="min-w-0 break-words text-right font-medium">{item.value}</span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </Reveal>

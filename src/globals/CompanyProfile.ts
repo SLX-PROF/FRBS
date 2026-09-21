@@ -18,7 +18,12 @@ export const CompanyProfile: GlobalConfig = {
         { name: 'ogrn', type: 'text', label: 'ОГРН' },
       ],
     },
-    { name: 'address', type: 'textarea', label: 'Юр. адрес', defaultValue: 'г. Екатеринбург, ул. Производственная, 1' },
+    {
+      name: 'address',
+      type: 'textarea',
+      label: 'Юр. адрес',
+      defaultValue: '117105, город Москва, 1-й Нагатинский проезд, д. 2, стр. 12, помещ. 2/2',
+    },
     {
       type: 'row',
       fields: [
