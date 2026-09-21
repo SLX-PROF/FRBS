@@ -115,7 +115,7 @@ export default async function DocsPage() {
                     className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/10"
                   >
                     <c.Icon className="h-4 w-4 flex-shrink-0" />
-                    <span className="truncate">{c.title.split(' ').slice(0, 2).join(' ')}</span>
+                    <span className="truncate">{c.title}</span>
                   </a>
                 ))}
               </div>

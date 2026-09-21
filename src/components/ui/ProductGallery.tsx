@@ -70,7 +70,7 @@ export default function ProductGallery({
         )}
       </div>
       {images.length > 1 && (
-        <div className="flex flex-wrap gap-3">
+        <div className="flex justify-center gap-2">
           {images.map((img, i) => (
             <button
               key={img.id ?? img.url}
@@ -78,12 +78,10 @@ export default function ProductGallery({
               onClick={() => pick(i)}
               aria-label={`Показать фото ${i + 1}`}
               aria-current={i === index}
-              className={`h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-surface transition-colors ${
-                i === index ? 'border-accent' : 'border-line hover:border-accent/40'
+              className={`h-2.5 rounded-full transition-all ${
+                i === index ? 'w-6 bg-accent' : 'w-2.5 bg-line hover:bg-accent/40'
               }`}
-            >
-              <img src={img.url!} alt={img.alt || title} className="h-full w-full object-cover" />
-            </button>
+            />
           ))}
         </div>
       )}
