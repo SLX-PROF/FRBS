@@ -11,7 +11,7 @@ import Card from '@/components/ui/Card'
 import CountUp from '@/components/motion/CountUp'
 import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
-import ProfileGlyph from '@/components/ui/ProfileGlyph'
+import ProductPhotoHover from '@/components/ui/ProductPhotoHover'
 import { getAllProducts } from '@/lib/products'
 import {
   ArchitectIcon,
@@ -338,15 +338,7 @@ export default async function Home() {
                   className="group flex h-full flex-col overflow-hidden p-0"
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-surface transition-transform duration-500 group-hover:scale-105">
-                    {typeof p.images?.[0] === 'object' && p.images[0]?.url ? (
-                      <img
-                        src={p.images[0].url}
-                        alt={p.images[0].alt || p.title}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <ProfileGlyph variant={(i % 3) as 0 | 1 | 2} />
-                    )}
+                    <ProductPhotoHover images={p.images} alt={p.title} variant={(i % 3) as 0 | 1 | 2} />
                   </div>
                   <div className="flex flex-1 flex-col p-6">
                     <div className="text-xs font-semibold uppercase tracking-wider text-accent">

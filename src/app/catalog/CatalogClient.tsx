@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import Reveal from '@/components/motion/Reveal'
-import ProfileGlyph from '@/components/ui/ProfileGlyph'
+import ProductPhotoHover from '@/components/ui/ProductPhotoHover'
 
 type ProductImage = { url?: string | null; alt?: string | null }
 
@@ -118,17 +118,9 @@ export default function CatalogClient({ products }: { products: Product[] }) {
               href={`/catalog/${p.slug}`}
               className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-1 hover:border-accent/30 hover:shadow-xl hover:shadow-accent/5"
             >
-              {/* Фото или схема профиля (пока фото не загружено) */}
+              {/* Фото (слайд-шоу по наведению, если их несколько) или схема профиля */}
               <div className="relative aspect-[4/3] overflow-hidden bg-surface transition-transform duration-500 group-hover:scale-105">
-                {typeof p.images?.[0] === 'object' && p.images[0]?.url ? (
-                  <img
-                    src={p.images[0].url}
-                    alt={p.images[0].alt || p.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <ProfileGlyph variant={(i % 3) as 0 | 1 | 2} />
-                )}
+                <ProductPhotoHover images={p.images} alt={p.title} variant={(i % 3) as 0 | 1 | 2} />
                 {p.series && (
                   <div className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-white">
                     {p.series}

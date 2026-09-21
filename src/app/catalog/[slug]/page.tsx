@@ -8,7 +8,7 @@ import Footer from '@/components/Footer'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import LeadForm from '@/components/LeadForm'
 import Button from '@/components/ui/Button'
-import ProfileGlyph from '@/components/ui/ProfileGlyph'
+import ProductGallery from '@/components/ui/ProductGallery'
 import { SteelIcon, NoPlasticIcon, LevelIcon, AdjustIcon } from '@/components/ui/Icons'
 import type { Media } from '@/payload-types'
 
@@ -81,33 +81,12 @@ export default async function ProductPage({
         <div className="mx-auto grid max-w-[1440px] gap-10 px-6 lg:grid-cols-2">
           {/* ФОТО */}
           <Reveal>
-            <div className="space-y-3">
-              <div className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface">
-                {images.length > 0 ? (
-                  <img
-                    src={images[0].url!}
-                    alt={images[0].alt || product.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <ProfileGlyph variant={((product.id ?? 0) % 3) as 0 | 1 | 2} />
-                )}
-                {product.series && (
-                  <div className="absolute left-4 top-4 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white">
-                    Серия {product.series}
-                  </div>
-                )}
-              </div>
-              {images.length > 1 && (
-                <div className="grid grid-cols-4 gap-3">
-                  {images.slice(1).map((img) => (
-                    <div key={img.id} className="aspect-square overflow-hidden rounded-xl border border-line bg-surface">
-                      <img src={img.url!} alt={img.alt || product.title} className="h-full w-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ProductGallery
+              images={images}
+              title={product.title}
+              variant={((product.id ?? 0) % 3) as 0 | 1 | 2}
+              badge={product.series ? `Серия ${product.series}` : undefined}
+            />
           </Reveal>
 
           {/* ИНФО */}
