@@ -93,7 +93,7 @@ export default async function Home() {
           <div className="h-[400px] w-[400px] rounded-full bg-accent/4 blur-3xl" />
         </Parallax>
 
-        <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 py-24 md:grid-cols-2 md:py-32">
+        <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 pt-14 pb-24 md:grid-cols-2 md:pt-20 md:pb-32">
           <div className="flex flex-col justify-center">
             <Reveal>
               <Tag tone="dark">Производство · Россия</Tag>

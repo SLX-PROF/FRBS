@@ -26,7 +26,7 @@ export default function PrivacyPage() {
       <ScrollProgress />
       <Header />
 
-      <section className="bg-graphite py-16 text-white md:py-20">
+      <section className="bg-graphite pt-8 pb-16 text-white md:pt-10 md:pb-20">
         <div className="mx-auto max-w-3xl px-6">
           <h1 className="text-3xl tracking-tight md:text-4xl lg:text-5xl">
             Политика конфиденциальности

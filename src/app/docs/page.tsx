@@ -85,7 +85,7 @@ export default async function DocsPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite py-20 text-white md:py-24">
+      <section className="relative overflow-hidden bg-graphite pt-10 pb-20 text-white md:pt-14 md:pb-24">
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>

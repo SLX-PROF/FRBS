@@ -35,7 +35,7 @@ export default async function CatalogPage() {
       <Header />
 
       {/* HERO КАТАЛОГА */}
-      <section className="bg-graphite py-20 text-white md:py-20">
+      <section className="bg-graphite pt-10 pb-20 text-white md:pt-12 md:pb-20">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <Tag tone="dark">{docs.length} моделей в линейке</Tag>
