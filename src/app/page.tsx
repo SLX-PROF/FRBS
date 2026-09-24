@@ -93,7 +93,7 @@ export default async function Home() {
           <div className="h-[400px] w-[400px] rounded-full bg-accent/4 blur-3xl" />
         </Parallax>
 
-        <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 pt-14 pb-24 md:grid-cols-2 md:pt-20 md:pb-32">
+        <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 pt-10 pb-16 md:grid-cols-2 md:pt-14 md:pb-24">
           <div className="flex flex-col justify-center">
             <Reveal>
               <Tag tone="dark">Производство · Россия</Tag>
@@ -163,7 +163,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 2. ПРОБЛЕМА → РЕШЕНИЕ ========== */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading
@@ -235,7 +235,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 3. КЛЮЧЕВЫЕ ЦИФРЫ ========== */}
-      <section className="bg-graphite py-24 text-white">
+      <section className="bg-graphite py-16 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading
@@ -280,7 +280,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 4. РАЗДЕЛЕНИЕ АУДИТОРИИ ========== */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading
@@ -313,7 +313,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 5. КАТАЛОГ-ПРЕВЬЮ ========== */}
-      <section className="bg-surface py-24">
+      <section className="bg-surface py-16">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <div className="mb-12 flex items-end justify-between">
@@ -366,7 +366,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 6. ТЕХНОЛОГИИ ========== */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading
@@ -395,7 +395,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 7. ДОВЕРИЕ ========== */}
-      <section className="bg-graphite py-24 text-white">
+      <section className="bg-graphite py-16 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading
@@ -456,7 +456,7 @@ export default async function Home() {
       </section>
 
       {/* ========== БЛОК 8. ФИНАЛЬНЫЙ CTA — с ТВОЕЙ формой ========== */}
-      <section id="contact" className="relative overflow-hidden bg-surface py-24 scroll-mt-28">
+      <section id="contact" className="relative overflow-hidden bg-surface py-16 scroll-mt-28">
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Reveal>

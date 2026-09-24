@@ -46,7 +46,7 @@ export default function AboutPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite pt-10 pb-20 text-white md:pt-14 md:pb-28">
+      <section className="relative overflow-hidden bg-graphite pt-8 pb-14 text-white md:pt-10 md:pb-20">
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
@@ -70,7 +70,7 @@ export default function AboutPage() {
       </section>
 
       {/* ИСТОРИЯ */}
-      <section className="py-20 md:py-20">
+      <section className="py-14 md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading title="История и путь развития" />
@@ -87,7 +87,7 @@ export default function AboutPage() {
       </section>
 
       {/* ПРОИЗВОДСТВО */}
-      <section className="bg-graphite py-20 text-white md:py-20">
+      <section className="bg-graphite py-14 text-white md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading dark title="Производство" />
@@ -114,7 +114,7 @@ export default function AboutPage() {
       </section>
 
       {/* СЕРТИФИКАТЫ */}
-      <section className="py-20 md:py-20">
+      <section className="py-14 md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading
@@ -147,7 +147,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden bg-graphite py-20 text-center text-white">
+      <section className="relative overflow-hidden bg-graphite py-14 text-center text-white">
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-2xl px-6">
           <Reveal>

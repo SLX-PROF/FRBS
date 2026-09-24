@@ -31,7 +31,7 @@ export default function PartnersPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite pt-10 pb-20 text-white md:pt-14 md:pb-28">
+      <section className="relative overflow-hidden bg-graphite pt-8 pb-14 text-white md:pt-10 md:pb-20">
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
@@ -66,7 +66,7 @@ export default function PartnersPage() {
       </section>
 
       {/* ПРЕИМУЩЕСТВА */}
-      <section className="py-20">
+      <section className="py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading center title="Почему дилеры выбирают FORBSA" />
@@ -89,7 +89,7 @@ export default function PartnersPage() {
       </section>
 
       {/* УСЛОВИЯ */}
-      <section id="conditions" className="bg-graphite py-20 text-white">
+      <section id="conditions" className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading dark center title="Условия партнёрства" />
@@ -144,7 +144,7 @@ export default function PartnersPage() {
       </section>
 
       {/* КАК НАЧАТЬ */}
-      <section className="py-20">
+      <section className="py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <SectionHeading center title="Как начать работу" subtitle="Три простых шага до первого заказа" />
@@ -183,7 +183,7 @@ export default function PartnersPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-surface py-20">
+      <section className="bg-surface py-14">
         <div className="mx-auto max-w-4xl px-6">
           <Reveal>
             <SectionHeading center title="Частые вопросы" />
@@ -231,7 +231,7 @@ export default function PartnersPage() {
       </section>
 
       {/* ФОРМА ЗАЯВКИ */}
-      <section id="lead-form" className="relative overflow-hidden bg-surface py-20">
+      <section id="lead-form" className="relative overflow-hidden bg-surface py-14">
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Reveal>

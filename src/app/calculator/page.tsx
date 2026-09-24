@@ -36,7 +36,7 @@ export default async function CalculatorPage() {
       <ScrollProgress />
       <Header />
 
-      <section className="bg-graphite pt-10 pb-20 text-white">
+      <section className="bg-graphite pt-8 pb-14 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <Tag tone="dark">Калькулятор подбора</Tag>
@@ -55,7 +55,7 @@ export default async function CalculatorPage() {
         </div>
       </section>
 
-      <section className="py-12 md:py-20">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <CalculatorClient products={products} />
         </div>

@@ -85,7 +85,7 @@ export default async function DocsPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite pt-10 pb-20 text-white md:pt-14 md:pb-24">
+      <section className="relative overflow-hidden bg-graphite pt-8 pb-14 text-white md:pt-10 md:pb-16">
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
@@ -125,7 +125,7 @@ export default async function DocsPage() {
       </section>
 
       {/* КАТЕГОРИИ ДОКУМЕНТОВ */}
-      <section className="py-20">
+      <section className="py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           {categories.length === 0 ? (
             <div className="rounded-2xl border border-line bg-white p-12 text-center text-ink-muted">
@@ -200,7 +200,7 @@ export default async function DocsPage() {
       </section>
 
       {/* ЛИД-МАГНИТ: АЛЬБОМ ПО ПОДПИСКЕ */}
-      <section className="bg-graphite py-20 text-white">
+      <section className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-4xl px-6">
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-8 md:p-12">
@@ -228,7 +228,7 @@ export default async function DocsPage() {
       </section>
 
       {/* CTA-БЛОК */}
-      <section className="py-20">
+      <section className="py-14">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">

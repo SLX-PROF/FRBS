@@ -77,7 +77,7 @@ export default async function ProductPage({
       </div>
 
       {/* ОСНОВНОЙ БЛОК */}
-      <section className="py-12 md:py-20">
+      <section className="py-10 md:py-14">
         <div className="mx-auto grid max-w-[1440px] gap-10 px-6 lg:grid-cols-2">
           {/* ФОТО */}
           <Reveal>
@@ -158,7 +158,7 @@ export default async function ProductPage({
       </section>
 
       {/* ПРЕИМУЩЕСТВА МОДЕЛИ */}
-      <section className="bg-graphite py-20 text-white">
+      <section className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <h2 className="text-3xl font-bold md:text-4xl">
@@ -187,7 +187,7 @@ export default async function ProductPage({
       </section>
 
       {/* ФОРМА ЗАЯВКИ */}
-      <section id="lead-form" className="relative overflow-hidden py-20">
+      <section id="lead-form" className="relative overflow-hidden py-14">
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Reveal>

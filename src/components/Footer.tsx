@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="h-px w-full bg-linear-to-r from-transparent via-accent/60 to-transparent" />
       <div className="pointer-events-none absolute -bottom-32 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-accent/10 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 py-16 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
+      <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-10 px-6 py-12 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
           <Link href="/" className="font-display text-xl font-semibold tracking-tight">
             FORBSA<span className="text-accent">.</span>

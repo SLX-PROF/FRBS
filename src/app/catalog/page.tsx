@@ -35,7 +35,7 @@ export default async function CatalogPage() {
       <Header />
 
       {/* HERO КАТАЛОГА */}
-      <section className="bg-graphite pt-10 pb-20 text-white md:pt-12 md:pb-20">
+      <section className="bg-graphite pt-8 pb-14 text-white md:pt-10 md:pb-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
             <Tag tone="dark">{docs.length} моделей в линейке</Tag>
@@ -58,14 +58,14 @@ export default async function CatalogPage() {
       </section>
 
       {/* ФИЛЬТРЫ + СЕТКА */}
-      <section className="py-12 md:py-20">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <CatalogClient products={docs} />
         </div>
       </section>
 
       {/* CTA-БЛОК */}
-      <section className="bg-graphite py-20 text-white">
+      <section className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Reveal>
             <SectionHeading

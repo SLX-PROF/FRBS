@@ -43,7 +43,7 @@ export default async function ContactsPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-graphite pt-10 pb-20 text-white md:pt-14 md:pb-24">
+      <section className="relative overflow-hidden bg-graphite pt-8 pb-14 text-white md:pt-10 md:pb-16">
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
@@ -67,7 +67,7 @@ export default async function ContactsPage() {
       </section>
 
       {/* КОНТАКТЫ + КАРТА */}
-      <section className="py-20">
+      <section className="py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <div className="grid gap-8 lg:grid-cols-5">
             {/* ЛЕВАЯ КОЛОНКА — КОНТАКТЫ */}
@@ -155,7 +155,7 @@ export default async function ContactsPage() {
       </section>
 
       {/* РЕКВИЗИТЫ + РЕЖИМ РАБОТЫ */}
-      <section className="bg-graphite py-20 text-white">
+      <section className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
           <div className="grid gap-8 md:grid-cols-2">
             {/* РЕКВИЗИТЫ */}
@@ -224,7 +224,7 @@ export default async function ContactsPage() {
       </section>
 
       {/* ФОРМА ОБРАТНОЙ СВЯЗИ */}
-      <section className="relative overflow-hidden py-20">
+      <section className="relative overflow-hidden py-14">
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Reveal>
@@ -244,7 +244,7 @@ export default async function ContactsPage() {
       </section>
 
       {/* CTA-БЛОК */}
-      <section className="bg-surface py-20">
+      <section className="bg-surface py-14">
         <div className="mx-auto max-w-4xl px-6">
           <Reveal>
             <div className="rounded-panel border border-line bg-white p-8 text-center shadow-panel md:p-12">
