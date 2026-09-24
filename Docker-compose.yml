@@ -2,6 +2,11 @@ services:
   db:
     image: postgres:16
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-forbsa}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-forbsa_dev_password}
@@ -12,6 +17,11 @@ services:
   web:
     build: .
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     env_file: .env
     environment:
       NODE_ENV: production
