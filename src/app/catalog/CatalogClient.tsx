@@ -51,10 +51,6 @@ export default function CatalogClient({ products }: { products: Product[] }) {
       {/* ПАНЕЛЬ ФИЛЬТРОВ И СОРТИРОВКИ */}
       <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-line bg-white p-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="text-sm text-ink-muted">
-            Найдено моделей:{' '}
-            <span className="font-mono font-semibold text-ink">{sorted.length}</span>
-          </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-ink-muted">Сортировка:</span>
             <div className="flex gap-1 rounded-xl bg-surface p-1">
@@ -111,7 +107,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
           </button>
         </div>
       ) : (
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {sorted.map((p, i) => (
           <Reveal key={p.id} delay={i * 60}>
             <Link
@@ -128,8 +124,8 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                 )}
               </div>
 
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-display text-xl font-bold transition-colors group-hover:text-accent">
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="font-display text-lg font-bold transition-colors group-hover:text-accent">
                   {p.title}
                 </h3>
                 {p.minDoorWidth && (

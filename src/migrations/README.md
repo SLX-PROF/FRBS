@@ -90,3 +90,15 @@ to whoever should be restricted to managing products. Idempotent (checks
 whether `'owner'` is already a valid enum label before touching anything).
 `scripts/bootstrap-schema.sql` is stale for this too (same caveat as above —
 it predates this migration and only matters for a from-scratch bootstrap).
+
+## `20260924_120000_media_image_sizes`
+
+`Media` got `imageSizes` (`card` 640px, `large` 1600px, WebP). Payload stores each
+size in `media.sizes_<name>_{url,width,height,mime_type,filesize,filename}` —
+the migration adds those 12 columns plus a filename index per size. **Apply
+`scripts/manual-migrate-media-image-sizes.sql` on prod BEFORE rebuilding the
+container** — new code selects these columns on every media query. Idempotent.
+Existing files get their WebP versions via
+`POST /api/cron/regenerate-media` (header `x-cron-key: $CRON_SECRET`), which
+writes `<name>-card.webp` / `<name>-large.webp` next to the originals and fills
+`sizes.*`; safe to re-run (skips media that already have sizes).

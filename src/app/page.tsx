@@ -337,7 +337,7 @@ export default async function Home() {
                   href={`/catalog/${p.slug}`}
                   className="group flex h-full flex-col overflow-hidden p-0"
                 >
-                  <div className="aspect-[4/3] overflow-hidden bg-surface transition-transform duration-500 group-hover:scale-105">
+                  <div className="aspect-[16/10] overflow-hidden bg-surface transition-transform duration-500 group-hover:scale-105">
                     <ProductPhotoHover images={p.images} alt={p.title} variant={(i % 3) as 0 | 1 | 2} />
                   </div>
                   <div className="flex flex-1 flex-col p-6">

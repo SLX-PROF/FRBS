@@ -5,19 +5,15 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Button from '@/components/ui/Button'
-import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import CatalogClient from './CatalogClient'
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata() {
-  const payload = await getPayload({ config: configPromise })
-  const { totalDocs } = await payload.find({ collection: 'products', limit: 0 })
-  return {
-    title: `Каталог автоматических порогов FORBSA — ${totalDocs} моделей`,
-    description: `Врезные и накладные автоматические пороги FORBSA. ${totalDocs} моделей для алюминиевых, стальных, ПВХ и деревянных дверей. Шаг длины 200 мм.`,
-  }
+export const metadata = {
+  title: 'Каталог автоматических порогов FORBSA',
+  description:
+    'Врезные и накладные автоматические пороги FORBSA для алюминиевых, стальных, ПВХ и деревянных дверей. Шаг длины 200 мм.',
 }
 
 export default async function CatalogPage() {
@@ -37,11 +33,8 @@ export default async function CatalogPage() {
       {/* HERO КАТАЛОГА */}
       <section className="bg-graphite pt-8 pb-14 text-white md:pt-10 md:pb-14">
         <div className="mx-auto max-w-[1440px] px-6">
-          <Reveal>
-            <Tag tone="dark">{docs.length} моделей в линейке</Tag>
-          </Reveal>
           <Reveal delay={100}>
-            <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="text-4xl tracking-tight md:text-5xl lg:text-6xl">
               Каталог продукции{' '}
               <span className="text-accent">
                 FORBSA

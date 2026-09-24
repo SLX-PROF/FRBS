@@ -3,7 +3,12 @@
 import { useRef, useState } from 'react'
 import ProfileGlyph from './ProfileGlyph'
 
-type PhotoImage = { id?: number | string; url?: string | null; alt?: string | null }
+type PhotoImage = {
+  id?: number | string
+  url?: string | null
+  alt?: string | null
+  sizes?: { large?: { url?: string | null } | null } | null
+}
 
 export default function ProductGallery({
   images,
@@ -47,7 +52,7 @@ export default function ProductGallery({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="mx-auto w-full max-w-md space-y-3 lg:mx-0">
       <div
         className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface"
         onMouseEnter={startCycling}
@@ -56,7 +61,7 @@ export default function ProductGallery({
         {images.map((img, i) => (
           <img
             key={img.id ?? img.url}
-            src={img.url!}
+            src={img.sizes?.large?.url || img.url!}
             alt={img.alt || title}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
               i === index ? 'opacity-100' : 'opacity-0'

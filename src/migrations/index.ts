@@ -5,6 +5,7 @@ import * as migration_20260828_120000_sp5_chat from './20260828_120000_sp5_chat'
 import * as migration_20260828_130000_sp5_chat_token from './20260828_130000_sp5_chat_token'
 import * as migration_20260917_140000_products_images_gallery from './20260917_140000_products_images_gallery'
 import * as migration_20260917_150000_users_role_owner_tier from './20260917_150000_users_role_owner_tier'
+import * as migration_20260924_120000_media_image_sizes from './20260924_120000_media_image_sizes'
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20260917_150000_users_role_owner_tier.up,
     down: migration_20260917_150000_users_role_owner_tier.down,
     name: '20260917_150000_users_role_owner_tier',
+  },
+  {
+    up: migration_20260924_120000_media_image_sizes.up,
+    down: migration_20260924_120000_media_image_sizes.down,
+    name: '20260924_120000_media_image_sizes',
   },
 ]

@@ -3,7 +3,11 @@
 import { useRef, useState } from 'react'
 import ProfileGlyph from './ProfileGlyph'
 
-type PhotoImage = { url?: string | null; alt?: string | null }
+type PhotoImage = {
+  url?: string | null
+  alt?: string | null
+  sizes?: { card?: { url?: string | null } | null } | null
+}
 
 export default function ProductPhotoHover({
   images,
@@ -61,7 +65,7 @@ export default function ProductPhotoHover({
       {photos.map((photo, i) => (
         <img
           key={photo.url}
-          src={photo.url!}
+          src={photo.sizes?.card?.url || photo.url!}
           alt={photo.alt || alt}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
             i === index ? 'opacity-100' : 'opacity-0'

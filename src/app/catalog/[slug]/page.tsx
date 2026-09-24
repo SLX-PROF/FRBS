@@ -78,7 +78,7 @@ export default async function ProductPage({
 
       {/* ОСНОВНОЙ БЛОК */}
       <section className="py-10 md:py-14">
-        <div className="mx-auto grid max-w-[1440px] gap-10 px-6 lg:grid-cols-2">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-6 lg:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] lg:gap-14">
           {/* ФОТО */}
           <Reveal>
             <ProductGallery
