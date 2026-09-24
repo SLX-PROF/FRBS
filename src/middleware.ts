@@ -36,8 +36,9 @@ export function middleware(request: NextRequest) {
       : unauthorized('Admin')
   }
 
-  // Планировщик ходит без куки предпросмотра; эти маршруты сами проверяют x-cron-key.
-  if (pathname.startsWith('/api/cron/')) return NextResponse.next()
+  // Планировщик и мониторинг ходят без куки предпросмотра. /api/cron/* сами проверяют
+  // x-cron-key, /api/health отдаёт только ok/не ok.
+  if (pathname.startsWith('/api/cron/') || pathname === '/api/health') return NextResponse.next()
 
   const previewSecret = process.env.SITE_PREVIEW_SECRET
   if (!previewSecret) return NextResponse.next()

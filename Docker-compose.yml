@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:16
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-forbsa}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-forbsa_dev_password}
@@ -10,6 +11,7 @@ services:
 
   web:
     build: .
+    restart: unless-stopped
     env_file: .env
     environment:
       NODE_ENV: production
