@@ -3,6 +3,17 @@
 import { useRef, useState } from 'react'
 import ProfileGlyph from './ProfileGlyph'
 
+const arrowClass =
+  'absolute top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow ring-1 ring-black/10 transition hover:scale-105 hover:bg-white focus-visible:outline-2 focus-visible:outline-accent md:opacity-0 md:group-hover/photo:opacity-100 md:focus-visible:opacity-100'
+
+function Chevron({ dir }: { dir: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={dir === 'left' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'} />
+    </svg>
+  )
+}
+
 type PhotoImage = {
   url?: string | null
   alt?: string | null
@@ -45,11 +56,11 @@ export default function ProductPhotoHover({
     setIndex(0)
   }
 
-  const pick = (e: React.MouseEvent, i: number) => {
+  const go = (e: React.MouseEvent, dir: 1 | -1) => {
     e.preventDefault()
     e.stopPropagation()
     stopTimer()
-    setIndex(i)
+    setIndex((i) => (i + dir + photos.length) % photos.length)
   }
 
   if (photos.length === 0) {
@@ -58,7 +69,7 @@ export default function ProductPhotoHover({
 
   return (
     <div
-      className={`relative h-full w-full ${className}`}
+      className={`group/photo relative h-full w-full ${className}`}
       onMouseEnter={start}
       onMouseLeave={stop}
     >
@@ -73,20 +84,14 @@ export default function ProductPhotoHover({
         />
       ))}
       {photos.length > 1 && (
-        <div className="absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={(e) => pick(e, i)}
-              aria-label={`Показать фото ${i + 1}`}
-              aria-current={i === index}
-              className={`h-1.5 rounded-full ring-1 ring-inset ring-black/20 transition-all ${
-                i === index ? 'w-4 bg-accent ring-accent' : 'w-1.5 bg-white/90 hover:bg-white'
-              }`}
-            />
-          ))}
-        </div>
+        <>
+          <button type="button" onClick={(e) => go(e, -1)} aria-label="Предыдущее фото" className={`${arrowClass} left-2`}>
+            <Chevron dir="left" />
+          </button>
+          <button type="button" onClick={(e) => go(e, 1)} aria-label="Следующее фото" className={`${arrowClass} right-2`}>
+            <Chevron dir="right" />
+          </button>
+        </>
       )}
     </div>
   )

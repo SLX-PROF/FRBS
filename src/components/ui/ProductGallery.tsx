@@ -3,6 +3,17 @@
 import { useRef, useState } from 'react'
 import ProfileGlyph from './ProfileGlyph'
 
+const arrowClass =
+  'absolute top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow ring-1 ring-black/10 transition hover:scale-105 hover:bg-white focus-visible:outline-2 focus-visible:outline-accent md:opacity-0 md:group-hover/photo:opacity-100 md:focus-visible:opacity-100'
+
+function Chevron({ dir }: { dir: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={dir === 'left' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'} />
+    </svg>
+  )
+}
+
 type PhotoImage = {
   id?: number | string
   url?: string | null
@@ -38,9 +49,9 @@ export default function ProductGallery({
     }
   }
 
-  const pick = (i: number) => {
+  const go = (dir: 1 | -1) => {
     stopCycling()
-    setIndex(i)
+    setIndex((i) => (i + dir + images.length) % images.length)
   }
 
   if (images.length === 0) {
@@ -52,9 +63,9 @@ export default function ProductGallery({
   }
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-3 lg:mx-0">
+    <div className="mx-auto w-full max-w-md lg:mx-0">
       <div
-        className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface"
+        className="group/photo relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface"
         onMouseEnter={startCycling}
         onMouseLeave={stopCycling}
       >
@@ -68,28 +79,22 @@ export default function ProductGallery({
             }`}
           />
         ))}
+        {images.length > 1 && (
+          <>
+            <button type="button" onClick={() => go(-1)} aria-label="Предыдущее фото" className={`${arrowClass} left-3`}>
+              <Chevron dir="left" />
+            </button>
+            <button type="button" onClick={() => go(1)} aria-label="Следующее фото" className={`${arrowClass} right-3`}>
+              <Chevron dir="right" />
+            </button>
+          </>
+        )}
         {badge && (
           <div className="absolute left-4 top-4 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white">
             {badge}
           </div>
         )}
       </div>
-      {images.length > 1 && (
-        <div className="flex justify-center gap-2">
-          {images.map((img, i) => (
-            <button
-              key={img.id ?? img.url}
-              type="button"
-              onClick={() => pick(i)}
-              aria-label={`Показать фото ${i + 1}`}
-              aria-current={i === index}
-              className={`h-2.5 rounded-full ring-1 ring-inset ring-black/10 transition-all ${
-                i === index ? 'w-6 bg-accent ring-accent' : 'w-2.5 bg-line hover:bg-accent/40'
-              }`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   )
 }
