@@ -17,7 +17,7 @@ export default function SectionHeading({
   return (
     <div className={`mb-10 md:mb-14 ${center ? 'text-center' : ''}`}>
       {eyebrow && <Tag tone={dark ? 'dark' : 'accent'}>{eyebrow}</Tag>}
-      <h2 className={`mt-4 text-4xl tracking-tight md:text-5xl md:leading-[1.05] lg:text-6xl ${dark ? 'text-white' : 'text-ink'}`}>
+      <h2 className={`mt-4 text-4xl tracking-tight md:text-5xl md:leading-[1.05] ${dark ? 'text-white' : 'text-ink'}`}>
         {title}
       </h2>
       {subtitle && (

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Reveal from '@/components/motion/Reveal'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
@@ -25,8 +26,8 @@ export default function NotFound() {
 
         <Reveal delay={300}>
           <p className="mx-auto mt-3 max-w-md text-white/60">
-            Возможно, товар переместился или ссылка устарела. Попробуйте
-            вернуться на главную или найти нужную модель в каталоге.
+            Ссылка устарела или страница перемещена. Перейдите на главную
+            или найдите нужную модель в каталоге.
           </p>
         </Reveal>
 
@@ -39,6 +40,14 @@ export default function NotFound() {
               Перейти в каталог
             </Button>
           </div>
+        </Reveal>
+
+        <Reveal delay={500}>
+          <nav className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/50">
+            <Link href="/docs" className="transition-colors hover:text-white">Документация</Link>
+            <Link href="/about" className="transition-colors hover:text-white">О компании</Link>
+            <Link href="/contacts" className="transition-colors hover:text-white">Контакты</Link>
+          </nav>
         </Reveal>
       </div>
     </main>

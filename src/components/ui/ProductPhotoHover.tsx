@@ -69,7 +69,7 @@ export default function ProductPhotoHover({
 
   return (
     <div
-      className={`group/photo relative h-full w-full ${className}`}
+      className={`skeleton group/photo relative h-full w-full ${className}`}
       onMouseEnter={start}
       onMouseLeave={stop}
     >

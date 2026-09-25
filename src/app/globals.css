@@ -40,6 +40,13 @@
   }
   h1, h2, h3, h4 {
     @apply font-display font-semibold tracking-tight;
+    text-wrap: balance;
+  }
+  h1 {
+    letter-spacing: -0.03em;
+  }
+  p, li {
+    text-wrap: pretty;
   }
   :focus-visible {
     outline: 2px solid var(--color-accent);
@@ -64,6 +71,26 @@
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* Заглушка под фото, пока оно грузится: снимок сверху полностью её закрывает. */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f5f5f7 25%, #ebebef 50%, #f5f5f7 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* Подсказка у кнопки чата */
+@keyframes hint-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-hint-in {
+  animation: hint-in 0.4s var(--ease-soft) both;
 }
 
 /* Ambient drift for the background accent orbs — slow and small so it

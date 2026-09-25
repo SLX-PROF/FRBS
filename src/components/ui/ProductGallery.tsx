@@ -65,7 +65,7 @@ export default function ProductGallery({
   return (
     <div className="mx-auto w-full max-w-md lg:mx-0">
       <div
-        className="group/photo relative aspect-square overflow-hidden rounded-2xl border border-line bg-surface"
+        className="skeleton group/photo relative aspect-square overflow-hidden rounded-2xl border border-line"
         onMouseEnter={startCycling}
         onMouseLeave={stopCycling}
       >

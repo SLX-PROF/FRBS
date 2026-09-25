@@ -22,6 +22,22 @@ export default function ChatWidget() {
   const [leadOpen, setLeadOpen] = useState(false)
   const [leadSent, setLeadSent] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [hint, setHint] = useState(false)
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('forbsa-chat-hint')) return
+    } catch {}
+    const t = setTimeout(() => setHint(true), 6000)
+    return () => clearTimeout(t)
+  }, [])
+
+  const dismissHint = () => {
+    setHint(false)
+    try {
+      sessionStorage.setItem('forbsa-chat-hint', '1')
+    } catch {}
+  }
 
   useEffect(() => {
     try {
@@ -73,16 +89,32 @@ export default function ChatWidget() {
   return (
     <>
       {!open && (
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Открыть чат с консультантом"
-          className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lift transition-transform hover:scale-105 active:scale-95"
-        >
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
-        </button>
+        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3">
+          {hint && (
+            <div role="status" className="animate-hint-in hidden items-center gap-2 rounded-full bg-white py-2 pl-4 pr-2 text-sm font-medium text-ink shadow-lift ring-1 ring-black/5 md:flex">
+              Спросите инженера
+              <button type="button" onClick={dismissHint} aria-label="Закрыть подсказку" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-ink-muted hover:bg-surface hover:text-ink">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              dismissHint()
+              setOpen(true)
+            }}
+            aria-label="Открыть чат с консультантом"
+            className="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-full bg-accent px-5 text-white shadow-lift transition-transform hover:scale-105 active:scale-95 md:w-14 md:px-0"
+          >
+            <svg viewBox="0 0 24 24" className="h-6 w-6 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <span className="text-sm font-semibold md:hidden">Консультация</span>
+          </button>
+        </div>
       )}
 
       {open && (
