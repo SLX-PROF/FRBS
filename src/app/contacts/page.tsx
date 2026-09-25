@@ -1,3 +1,6 @@
+import { draftMode } from 'next/headers'
+import { getPageContent } from '@/lib/pageContent'
+import PreviewListener from '@/components/PreviewListener'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
@@ -8,16 +11,22 @@ import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { MapPinIcon, PhoneIcon, MailIcon, MessageIcon } from '@/components/ui/Icons'
 
-export const metadata = {
-  title: 'Контакты FORBSA — офис и производство в Москве',
-  description:
-    'Свяжитесь с FORBSA: офис и производство в Москве. Телефон, email, форма обратной связи, реквизиты ООО «Форбса». Отвечаем в течение рабочего дня.',
+// Тексты берутся из админки на каждый запрос, поэтому страница не статическая.
+export const dynamic = 'force-dynamic'
+
+export async function generateMetadata() {
+  const { isEnabled } = await draftMode()
+  const c = await getPageContent('contacts-page', isEnabled)
+  return { title: c.seoTitle, description: c.seoDescription }
 }
 
-export default function ContactsPage() {
+export default async function ContactsPage() {
+  const { isEnabled: isDraft } = await draftMode()
+  const c = await getPageContent('contacts-page', isDraft)
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
+      {isDraft && <PreviewListener />}
       <Header />
 
       {/* HERO */}
@@ -25,20 +34,19 @@ export default function ContactsPage() {
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <Tag tone="dark">Офис · Производство</Tag>
+            <Tag tone="dark">{c.heroEyebrow}</Tag>
           </Reveal>
           <Reveal delay={100}>
             <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
-              Свяжитесь{' '}
+              {c.heroTitle}{' '}
               <span className="text-accent">
-                с нами
+                {c.heroAccent}
               </span>
             </h1>
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-4 max-w-2xl text-lg text-white/70 md:text-xl">
-              Отвечаем в течение рабочего дня. Поможем подобрать модель,
-              подготовим КП или проконсультируем по монтажу.
+              {c.heroLead}
             </p>
           </Reveal>
         </div>
@@ -139,15 +147,15 @@ export default function ContactsPage() {
             {/* РЕЖИМ РАБОТЫ */}
             <Reveal delay={150}>
               <div className="flex h-full flex-col rounded-panel border border-white/10 bg-white/5 p-8 backdrop-blur">
-                <Tag tone="dark">Когда мы работаем</Tag>
+                <Tag tone="dark">{c.hoursEyebrow}</Tag>
                 <h2 className="mt-4 text-2xl font-semibold">
-                  Режим работы
+                  {c.hoursTitle}
                 </h2>
                 <div className="mt-6 space-y-3 text-sm">
                   {[
-                    { day: 'Понедельник – Пятница', time: '9:00 – 18:00', active: true },
-                    { day: 'Суббота', time: 'По договорённости', active: false },
-                    { day: 'Воскресенье', time: 'Выходной', active: false },
+                    { day: 'Понедельник – Пятница', time: c.hoursWeekdays, active: true },
+                    { day: 'Суббота', time: c.hoursSaturday, active: false },
+                    { day: 'Воскресенье', time: c.hoursSunday, active: false },
                   ].map((item) => (
                     <div
                       key={item.day}
@@ -165,9 +173,9 @@ export default function ContactsPage() {
                 <div className="mt-6 flex items-start gap-3 rounded-xl border border-accent/30 bg-accent/10 p-4 text-sm">
                   <MessageIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
                   <div>
-                    <div className="font-semibold text-accent">Отвечаем быстро</div>
+                    <div className="font-semibold text-accent">{c.fastReplyTitle}</div>
                     <div className="mt-1 text-white/70">
-                      Заявки с сайта обрабатываются в течение 1 рабочего дня.
+                      {c.fastReplyText}
                     </div>
                   </div>
                 </div>
@@ -184,8 +192,8 @@ export default function ContactsPage() {
           <Reveal>
             <SectionHeading
               center
-              title="Напишите нам"
-              subtitle="Заполните форму — менеджер свяжется с вами в течение рабочего дня и ответит на все вопросы."
+              title={c.formTitle}
+              subtitle={c.formSubtitle}
             />
           </Reveal>
 

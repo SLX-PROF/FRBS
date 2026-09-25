@@ -106,9 +106,19 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'home-page': HomePage;
+    'about-page': AboutPage;
+    'contacts-page': ContactsPage;
+    'docs-page': DocsPage;
+    'catalog-page': CatalogPage;
     'company-profile': CompanyProfile;
   };
   globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'contacts-page': ContactsPageSelect<false> | ContactsPageSelect<true>;
+    'docs-page': DocsPageSelect<false> | DocsPageSelect<true>;
+    'catalog-page': CatalogPageSelect<false> | CatalogPageSelect<true>;
     'company-profile': CompanyProfileSelect<false> | CompanyProfileSelect<true>;
   };
   locale: null;
@@ -146,11 +156,17 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name: string;
+  /**
+   * Владелец видит всё. Контент-менеджер правит каталог, тексты страниц и фото, но не видит заявки. Менеджер по продажам работает с заявками, сделками и задачами, но не редактирует сайт.
+   */
   role: 'owner' | 'admin' | 'manager';
   /**
-   * Для уведомлений (этап SP3)
+   * Для уведомлений о заявках. Как узнать: человек запускает бота и пишет @userinfobot. Сейчас Telegram недоступен с сервера, уведомления идут на e-mail.
    */
   telegramChatId?: string | null;
+  /**
+   * Снимите галочку, чтобы отключить человека, не удаляя его историю
+   */
   active?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -172,6 +188,8 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Фото и файлы. Загружайте JPG, PNG или WebP: сайт сам сделает облегчённые версии. HEIC и PDF как фото не подходят.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -209,6 +227,8 @@ export interface Media {
   };
 }
 /**
+ * Черновик не виден на сайте и не попадает в базу знаний бота. «Предпросмотр» показывает страницу модели до публикации. Чтобы создать похожую модель, откройте существующую и нажмите «Дублировать».
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
@@ -216,23 +236,36 @@ export interface Product {
   id: number;
   title: string;
   /**
-   * Латиницей, через дефис: forbsa-tt
+   * Латиницей, через дефис: forbsa-tt. Адрес страницы: /catalog/<этот адрес>
    */
   slug: string;
   type: 'врезной' | 'накладной';
   series?: string | null;
+  /**
+   * Нужно для фильтра по ширине двери и для ответов бота
+   */
   minDoorWidth?: number | null;
   warranty?: number | null;
+  /**
+   * Основа ответов чат-бота о модели: пишите конкретно, с цифрами
+   */
   features?: string | null;
   package?: string | null;
   recommendation?: string | null;
   compatibleProfiles?: string | null;
+  /**
+   * JPG, PNG или WebP (не HEIC и не PDF). Первое фото показывается в каталоге
+   */
   images?: (number | Media)[] | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
+  /**
+   * Чем меньше число, тем выше модель в каталоге
+   */
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -580,6 +613,30 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -602,6 +659,7 @@ export interface ProductsSelect<T extends boolean = true> {
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -796,6 +854,163 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Сохраните как черновик и нажмите «Предпросмотр», чтобы увидеть страницу до публикации. На сайте изменения появятся после «Опубликовать». Пустое поле вернёт прежний текст.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  heroEyebrow?: string | null;
+  heroTitle?: string | null;
+  /**
+   * Показывается оранжевым после заголовка
+   */
+  heroAccent?: string | null;
+  heroLead?: string | null;
+  heroCta?: string | null;
+  problemTitle?: string | null;
+  problemAccent?: string | null;
+  numbersTitle?: string | null;
+  numbersAccent?: string | null;
+  audienceTitle?: string | null;
+  audienceSubtitle?: string | null;
+  catalogTitle?: string | null;
+  /**
+   * {count} заменится числом моделей в каталоге. Уберите его, если число показывать не нужно.
+   */
+  catalogSubtitle?: string | null;
+  techTitle?: string | null;
+  techLead?: string | null;
+  trustTitle?: string | null;
+  trustLead?: string | null;
+  ctaTitle?: string | null;
+  ctaLead?: string | null;
+  /**
+   * Показывается в поисковой выдаче и во вкладке браузера
+   */
+  seoTitle?: string | null;
+  /**
+   * {count} заменится числом моделей.
+   */
+  seoDescription?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Сохраните как черновик и нажмите «Предпросмотр», чтобы увидеть страницу до публикации. На сайте изменения появятся после «Опубликовать». Пустое поле вернёт прежний текст.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  heroEyebrow?: string | null;
+  heroTitle?: string | null;
+  heroAccent?: string | null;
+  heroLead?: string | null;
+  historyTitle?: string | null;
+  historyText?: string | null;
+  /**
+   * Очистите поле, чтобы пометка не показывалась на сайте
+   */
+  historyNote?: string | null;
+  productionTitle?: string | null;
+  /**
+   * Очистите поле, чтобы пометка не показывалась на сайте
+   */
+  productionNote?: string | null;
+  ctaTitle?: string | null;
+  ctaText?: string | null;
+  ctaButton?: string | null;
+  /**
+   * Показывается в поисковой выдаче и во вкладке браузера
+   */
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Сохраните как черновик и нажмите «Предпросмотр», чтобы увидеть страницу до публикации. На сайте изменения появятся после «Опубликовать». Пустое поле вернёт прежний текст.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts-page".
+ */
+export interface ContactsPage {
+  id: number;
+  heroEyebrow?: string | null;
+  heroTitle?: string | null;
+  heroAccent?: string | null;
+  heroLead?: string | null;
+  hoursEyebrow?: string | null;
+  hoursTitle?: string | null;
+  hoursWeekdays?: string | null;
+  hoursSaturday?: string | null;
+  hoursSunday?: string | null;
+  fastReplyTitle?: string | null;
+  fastReplyText?: string | null;
+  formTitle?: string | null;
+  formSubtitle?: string | null;
+  /**
+   * Показывается в поисковой выдаче и во вкладке браузера
+   */
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Сохраните как черновик и нажмите «Предпросмотр», чтобы увидеть страницу до публикации. На сайте изменения появятся после «Опубликовать». Пустое поле вернёт прежний текст.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "docs-page".
+ */
+export interface DocsPage {
+  id: number;
+  heroEyebrow?: string | null;
+  heroTitle?: string | null;
+  heroAccent?: string | null;
+  heroLead?: string | null;
+  ctaTitle?: string | null;
+  ctaText?: string | null;
+  ctaButton?: string | null;
+  /**
+   * Показывается в поисковой выдаче и во вкладке браузера
+   */
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Сохраните как черновик и нажмите «Предпросмотр», чтобы увидеть страницу до публикации. На сайте изменения появятся после «Опубликовать». Пустое поле вернёт прежний текст.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-page".
+ */
+export interface CatalogPage {
+  id: number;
+  heroTitle?: string | null;
+  heroAccent?: string | null;
+  heroLead?: string | null;
+  ctaTitle?: string | null;
+  ctaSubtitle?: string | null;
+  ctaButton?: string | null;
+  /**
+   * Показывается в поисковой выдаче и во вкладке браузера
+   */
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "company-profile".
  */
@@ -816,6 +1031,123 @@ export interface CompanyProfile {
   signerTitle?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroAccent?: T;
+  heroLead?: T;
+  heroCta?: T;
+  problemTitle?: T;
+  problemAccent?: T;
+  numbersTitle?: T;
+  numbersAccent?: T;
+  audienceTitle?: T;
+  audienceSubtitle?: T;
+  catalogTitle?: T;
+  catalogSubtitle?: T;
+  techTitle?: T;
+  techLead?: T;
+  trustTitle?: T;
+  trustLead?: T;
+  ctaTitle?: T;
+  ctaLead?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroAccent?: T;
+  heroLead?: T;
+  historyTitle?: T;
+  historyText?: T;
+  historyNote?: T;
+  productionTitle?: T;
+  productionNote?: T;
+  ctaTitle?: T;
+  ctaText?: T;
+  ctaButton?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts-page_select".
+ */
+export interface ContactsPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroAccent?: T;
+  heroLead?: T;
+  hoursEyebrow?: T;
+  hoursTitle?: T;
+  hoursWeekdays?: T;
+  hoursSaturday?: T;
+  hoursSunday?: T;
+  fastReplyTitle?: T;
+  fastReplyText?: T;
+  formTitle?: T;
+  formSubtitle?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "docs-page_select".
+ */
+export interface DocsPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroAccent?: T;
+  heroLead?: T;
+  ctaTitle?: T;
+  ctaText?: T;
+  ctaButton?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-page_select".
+ */
+export interface CatalogPageSelect<T extends boolean = true> {
+  heroTitle?: T;
+  heroAccent?: T;
+  heroLead?: T;
+  ctaTitle?: T;
+  ctaSubtitle?: T;
+  ctaButton?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

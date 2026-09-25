@@ -1,3 +1,6 @@
+import { draftMode } from 'next/headers'
+import { getPageContent } from '@/lib/pageContent'
+import PreviewListener from '@/components/PreviewListener'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Reveal from '@/components/motion/Reveal'
@@ -10,24 +13,29 @@ import CatalogClient from './CatalogClient'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Каталог автоматических порогов FORBSA',
-  description:
-    'Врезные и накладные автоматические пороги FORBSA для алюминиевых, стальных, ПВХ и деревянных дверей. Шаг длины 200 мм.',
+export async function generateMetadata() {
+  const { isEnabled } = await draftMode()
+  const c = await getPageContent('catalog-page', isEnabled)
+  return { title: c.seoTitle, description: c.seoDescription }
 }
 
 export default async function CatalogPage() {
+  const { isEnabled: isDraft } = await draftMode()
+  const c = await getPageContent('catalog-page', isDraft)
   const payload = await getPayload({ config: configPromise })
 
+  // Порядок как в админке (поле «Порядок сортировки»), затем по названию.
   const { docs } = await payload.find({
     collection: 'products',
     limit: 100,
-    sort: 'name',
+    sort: ['sortOrder', 'title'],
+    draft: isDraft,
   })
 
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
+      {isDraft && <PreviewListener />}
       <Header />
 
       {/* HERO КАТАЛОГА */}
@@ -35,16 +43,15 @@ export default async function CatalogPage() {
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal delay={100}>
             <h1 className="text-4xl tracking-tight md:text-5xl lg:text-6xl">
-              Каталог продукции{' '}
+              {c.heroTitle}{' '}
               <span className="text-accent">
-                FORBSA
+                {c.heroAccent}
               </span>
             </h1>
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-4 max-w-2xl text-lg text-white/70">
-              Автоматические пороги для герметизации дверей любого типа. Шаг
-              длины 200 мм — подбираем под любую ширину полотна.
+              {c.heroLead}
             </p>
           </Reveal>
         </div>
@@ -64,12 +71,12 @@ export default async function CatalogPage() {
             <SectionHeading
               dark
               center
-              title="Не знаете, какая модель подходит?"
-              subtitle="Сообщите ширину двери и тип монтажа — инженер подберёт подходящую модель."
+              title={c.ctaTitle}
+              subtitle={c.ctaSubtitle}
             />
             <div className="flex flex-wrap justify-center gap-3">
               <Button href="/contacts" size="lg">
-                Консультация инженера →
+                {c.ctaButton}
               </Button>
             </div>
           </Reveal>

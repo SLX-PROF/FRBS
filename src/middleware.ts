@@ -38,7 +38,10 @@ export function middleware(request: NextRequest) {
 
   // Планировщик и мониторинг ходят без куки предпросмотра. /api/cron/* сами проверяют
   // x-cron-key, /api/health отдаёт только ok/не ok.
-  if (pathname.startsWith('/api/cron/') || pathname === '/api/health') return NextResponse.next()
+  if (pathname.startsWith('/api/cron/') || pathname === '/api/health' || pathname === '/api/preview') return NextResponse.next()
+  // Вошедшие в админку (кука Payload) ходят в API без куки предпросмотра: иначе заглушка
+  // подменяла бы ответы API у новых сотрудников.
+  if (pathname.startsWith('/api/') && request.cookies.has('payload-token')) return NextResponse.next()
 
   const previewSecret = process.env.SITE_PREVIEW_SECRET
   if (!previewSecret) return NextResponse.next()

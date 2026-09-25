@@ -102,3 +102,13 @@ Existing files get their WebP versions via
 `POST /api/cron/regenerate-media` (header `x-cron-key: $CRON_SECRET`), which
 writes `<name>-card.webp` / `<name>-large.webp` next to the originals and fills
 `sizes.*`; safe to re-run (skips media that already have sizes).
+
+## `20260925_133941_cms_pages_drafts`
+
+CMS: черновики и версии для `products` (колонка `_status`, таблицы `_products_v*`) и пять
+глобалов «Содержимое сайта» (`home_page`, `about_page`, `contacts_page`, `docs_page`,
+`catalog_page`) с версиями. Сгенерирована `payload migrate:create` (работает без БД, считает
+разницу со снимком схемы `*.json`). **Существующие товары получают `_status = 'published'`**,
+иначе колонка по умолчанию сделала бы их черновиками и они пропали бы с сайта.
+Применять на проде `scripts/manual-migrate-cms-pages-drafts.sql` ДО пересборки контейнера
+(идемпотентен, проверен на PGlite: bootstrap + все ручные миграции + эта, дважды подряд).

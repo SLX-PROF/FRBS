@@ -10,10 +10,22 @@ export const Products: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Каталог',
+    defaultColumns: ['title', 'type', 'series', 'sortOrder', '_status', 'updatedAt'],
+    listSearchableFields: ['title', 'slug', 'series'],
+    description:
+      'Черновик не виден на сайте и не попадает в базу знаний бота. «Предпросмотр» показывает страницу модели до публикации. Чтобы создать похожую модель, откройте существующую и нажмите «Дублировать».',
+    components: { beforeListTable: ['/components/admin/ReindexKb#ReindexKb'] },
+    preview: (doc) => `/api/preview?path=${encodeURIComponent(`/catalog/${(doc as { slug?: string }).slug ?? ''}`)}`,
+    livePreview: {
+      url: ({ data }) => `/api/preview?path=${encodeURIComponent(`/catalog/${(data as { slug?: string }).slug ?? ''}`)}`,
+    },
     // read публичный (каталог на сайте), но раздел меню виден только тем,
     // кто товарами управляет — иначе Payload показал бы ссылку и менеджерам.
     hidden: ({ user }) => !isProductStaff(user),
   },
+  defaultSort: 'sortOrder',
+  versions: { maxPerDoc: 20, drafts: true },
   access: {
     read: () => true,
     create: productStaffOnly,
@@ -23,6 +35,8 @@ export const Products: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ doc, req }) => {
+        // Черновики в базу знаний бота не попадают: только опубликованные модели.
+        if (doc._status && doc._status !== 'published') return doc
         try {
           await reindexOneProduct(req.payload, doc)
         } catch (err) {
@@ -53,10 +67,19 @@ export const Products: CollectionConfig = {
   },
   fields: [
     {
+      name: 'botReadiness',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: { Field: '/components/admin/BotReadiness#BotReadiness' },
+      },
+    },
+    {
       name: 'title',
       type: 'text',
       label: 'Название',
       required: true,
+      hooks: { beforeDuplicate: [({ value }) => (value ? `${value} (копия)` : value)] },
     },
     {
       name: 'slug',
@@ -64,8 +87,9 @@ export const Products: CollectionConfig = {
       label: 'URL (slug)',
       required: true,
       unique: true,
+      hooks: { beforeDuplicate: [({ value }) => (value ? `${value}-copy` : value)] },
       admin: {
-        description: 'Латиницей, через дефис: forbsa-tt',
+        description: 'Латиницей, через дефис: forbsa-tt. Адрес страницы: /catalog/<этот адрес>',
       },
     },
     {
@@ -87,6 +111,7 @@ export const Products: CollectionConfig = {
       name: 'minDoorWidth',
       type: 'number',
       label: 'Мин. ширина двери (мм)',
+      admin: { description: 'Нужно для фильтра по ширине двери и для ответов бота' },
     },
     {
       name: 'warranty',
@@ -97,6 +122,7 @@ export const Products: CollectionConfig = {
       name: 'features',
       type: 'textarea',
       label: 'Особенности',
+      admin: { description: 'Основа ответов чат-бота о модели: пишите конкретно, с цифрами' },
     },
     {
       name: 'package',
@@ -119,6 +145,7 @@ export const Products: CollectionConfig = {
       relationTo: 'media',
       hasMany: true,
       label: 'Фото',
+      admin: { description: 'JPG, PNG или WebP (не HEIC и не PDF). Первое фото показывается в каталоге' },
     },
     {
       name: 'seoTitle',
@@ -135,6 +162,7 @@ export const Products: CollectionConfig = {
       type: 'number',
       label: 'Порядок сортировки',
       defaultValue: 0,
+      admin: { position: 'sidebar', description: 'Чем меньше число, тем выше модель в каталоге' },
     },
   ],
 }

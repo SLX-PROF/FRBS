@@ -1,3 +1,6 @@
+import { draftMode } from 'next/headers'
+import { getPageContent, withCount } from '@/lib/pageContent'
+import PreviewListener from '@/components/PreviewListener'
 import Link from 'next/link'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
@@ -31,10 +34,11 @@ import {
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata() {
-  const products = await getAllProducts()
+  const { isEnabled } = await draftMode()
+  const [c, products] = await Promise.all([getPageContent('home-page', isEnabled), getAllProducts()])
   return {
-    title: 'FORBSA — автоматические пороги для дверей. Производство от 1 дня',
-    description: `Российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, ${products.length} моделей. Для архитекторов и монтажников.`,
+    title: c.seoTitle,
+    description: withCount(c.seoDescription, products.length),
   }
 }
 
@@ -67,12 +71,15 @@ const tech = [
 ]
 
 export default async function Home() {
+  const { isEnabled: isDraft } = await draftMode()
+  const c = await getPageContent('home-page', isDraft)
   const products = await getAllProducts()
   const catalogPreview = products.slice(0, 3)
 
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
+      {isDraft && <PreviewListener />}
       <Header />
 
       {/* ========== БЛОК 1. HERO ========== */}
@@ -87,29 +94,28 @@ export default async function Home() {
         <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 pt-10 pb-16 md:grid-cols-2 md:pt-14 md:pb-24">
           <div className="flex flex-col justify-center">
             <Reveal>
-              <Tag tone="dark">Производство · Россия</Tag>
+              <Tag tone="dark">{c.heroEyebrow}</Tag>
             </Reveal>
 
             <Reveal delay={100}>
               <h1 className="mt-6 text-5xl leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-                Автоматические пороги{' '}
+                {c.heroTitle}{' '}
                 <span className="text-accent">
-                  FORBSA
+                  {c.heroAccent}
                 </span>
               </h1>
             </Reveal>
 
             <Reveal delay={200}>
               <p className="mt-6 max-w-xl text-lg text-white/70 md:text-xl">
-                Герметизация двери за 1 секунду. Защита от дыма, шума, холода,
-                света, пыли и насекомых. 1 000 000 циклов. Сертификат РОСТЕСТ.
+                {c.heroLead}
               </p>
             </Reveal>
 
             <Reveal delay={300}>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Button href="/catalog" size="lg" className="group">
-                  Смотреть каталог
+                  {c.heroCta}
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </Button>
               </div>
@@ -153,7 +159,7 @@ export default async function Home() {
               eyebrow="Проблема → Решение"
               title={
                 <>
-                  Щель под дверью — <span className="text-ink-muted">источник 6 проблем</span>
+                  {c.problemTitle} <span className="text-ink-muted">{c.problemAccent}</span>
                 </>
               }
             />
@@ -225,9 +231,9 @@ export default async function Home() {
               center
               title={
                 <>
-                  Цифры, которые{' '}
+                  {c.numbersTitle}{' '}
                   <span className="text-accent">
-                    говорят сами
+                    {c.numbersAccent}
                   </span>
                 </>
               }
@@ -267,8 +273,8 @@ export default async function Home() {
           <Reveal>
             <SectionHeading
               center
-              title="Выберите вашу роль"
-              subtitle="Мы говорим на одном языке с каждым участником строительного процесса"
+              title={c.audienceTitle}
+              subtitle={c.audienceSubtitle}
             />
           </Reveal>
 
@@ -300,8 +306,8 @@ export default async function Home() {
           <Reveal>
             <div className="mb-12 flex items-end justify-between">
               <SectionHeading
-                title="Линейка продукции"
-                subtitle={`${products.length} моделей под любые задачи — от жилых объектов до противопожарных дверей`}
+                title={c.catalogTitle}
+                subtitle={withCount(c.catalogSubtitle, products.length)}
               />
               <Link
                 href="/catalog"
@@ -353,8 +359,8 @@ export default async function Home() {
           <Reveal>
             <SectionHeading
               center
-              title="Инженерное превосходство"
-              subtitle="Ни одного пластикового узла. Только металл, закалённая сталь и точная механика."
+              title={c.techTitle}
+              subtitle={c.techLead}
             />
           </Reveal>
 
@@ -383,8 +389,8 @@ export default async function Home() {
             <SectionHeading
               dark
               center
-              title="Нам доверяют"
-              subtitle="Сертифицированная продукция, проверенная миллионами циклов"
+              title={c.trustTitle}
+              subtitle={c.trustLead}
             />
           </Reveal>
 
@@ -444,8 +450,8 @@ export default async function Home() {
           <Reveal>
             <SectionHeading
               center
-              title="Обсудим ваш проект?"
-              subtitle="Оставьте заявку — инженер свяжется в течение рабочего дня, подберёт модель и подготовит коммерческое предложение."
+              title={c.ctaTitle}
+              subtitle={c.ctaLead}
             />
           </Reveal>
 

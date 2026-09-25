@@ -29,18 +29,31 @@ export const Users: CollectionConfig = {
       required: true,
       defaultValue: 'manager',
       options: [
-        { label: 'Владелец', value: 'owner' },
-        { label: 'Администратор (товары)', value: 'admin' },
-        { label: 'Менеджер', value: 'manager' },
+        { label: 'Владелец (полный доступ)', value: 'owner' },
+        { label: 'Контент-менеджер (каталог, тексты, фото)', value: 'admin' },
+        { label: 'Менеджер по продажам (заявки и сделки)', value: 'manager' },
       ],
+      admin: {
+        description:
+          'Владелец видит всё. Контент-менеджер правит каталог, тексты страниц и фото, но не видит заявки. Менеджер по продажам работает с заявками, сделками и задачами, но не редактирует сайт.',
+      },
       access: { update: ownerFieldOnly },
     },
     {
       name: 'telegramChatId',
       type: 'text',
       label: 'Telegram chat ID',
-      admin: { description: 'Для уведомлений (этап SP3)' },
+      admin: {
+        description:
+          'Для уведомлений о заявках. Как узнать: человек запускает бота и пишет @userinfobot. Сейчас Telegram недоступен с сервера, уведомления идут на e-mail.',
+      },
     },
-    { name: 'active', type: 'checkbox', label: 'Активен', defaultValue: true },
+    {
+      name: 'active',
+      type: 'checkbox',
+      label: 'Активен',
+      defaultValue: true,
+      admin: { description: 'Снимите галочку, чтобы отключить человека, не удаляя его историю' },
+    },
   ],
 }

@@ -1,3 +1,6 @@
+import { draftMode } from 'next/headers'
+import { getPageContent } from '@/lib/pageContent'
+import PreviewListener from '@/components/PreviewListener'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Reveal from '@/components/motion/Reveal'
@@ -12,10 +15,10 @@ import type { Document as DocDoc, Media } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Документация FORBSA — сертификаты, альбом узлов, инструкции',
-  description:
-    'Сертификаты РОСТЕСТ, альбом типовых технических решений, BIM-модели, инструкции по монтажу. Всё для архитекторов, проектировщиков и монтажников.',
+export async function generateMetadata() {
+  const { isEnabled } = await draftMode()
+  const c = await getPageContent('docs-page', isEnabled)
+  return { title: c.seoTitle, description: c.seoDescription }
 }
 
 const categoryMeta: Record<string, { title: string; desc: string; Icon: ComponentType<{ className?: string }> }> = {
@@ -60,6 +63,8 @@ function formatSize(bytes?: number | null): string {
 }
 
 export default async function DocsPage() {
+  const { isEnabled: isDraft } = await draftMode()
+  const c = await getPageContent('docs-page', isDraft)
   const payload = await getPayload({ config: configPromise })
   const { docs } = await payload.find({
     collection: 'documents',
@@ -81,6 +86,7 @@ export default async function DocsPage() {
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
+      {isDraft && <PreviewListener />}
       <Header />
 
       {/* HERO */}
@@ -88,19 +94,17 @@ export default async function DocsPage() {
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <Tag tone="dark">Для архитекторов и проектировщиков</Tag>
+            <Tag tone="dark">{c.heroEyebrow}</Tag>
           </Reveal>
           <Reveal delay={100}>
             <h1 className="mt-6 text-4xl tracking-tight md:text-5xl lg:text-6xl">
-              Документация{' '}
-              <span className="text-accent">FORBSA</span>
+              {c.heroTitle}{' '}
+              <span className="text-accent">{c.heroAccent}</span>
             </h1>
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-4 max-w-2xl text-lg text-white/70 md:text-xl">
-              Сертификаты, альбом типовых технических решений, BIM-модели и
-              инструкции по монтажу. Все файлы доступны для скачивания без
-              регистрации.
+              {c.heroLead}
             </p>
           </Reveal>
 
@@ -203,15 +207,14 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Нужна консультация инженера?
+              {c.ctaTitle}
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-white/70">
-              Поможем подобрать модель, подготовим узел под ваш проект,
-              проконсультируем по госэкспертизе.
+              {c.ctaText}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button href="/contacts" size="lg">
-                Связаться с инженером →
+                {c.ctaButton}
               </Button>
             </div>
           </Reveal>

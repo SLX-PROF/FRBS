@@ -6,6 +6,7 @@ export const Documents: CollectionConfig = {
   labels: { singular: 'Документ', plural: 'Документы' },
   admin: {
     useAsTitle: 'title',
+    group: 'Каталог',
     defaultColumns: ['title', 'category', 'createdAt'],
     hidden: hiddenFromNonOwner,
   },

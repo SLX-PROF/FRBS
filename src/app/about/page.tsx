@@ -1,3 +1,6 @@
+import { draftMode } from 'next/headers'
+import { getPageContent } from '@/lib/pageContent'
+import PreviewListener from '@/components/PreviewListener'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
@@ -7,10 +10,13 @@ import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { FactoryIcon, ShieldIcon, RulerIcon } from '@/components/ui/Icons'
 
-export const metadata = {
-  title: 'О компании — FORBSA',
-  description:
-    'FORBSA — российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, производство от 1 дня.',
+// Тексты берутся из админки на каждый запрос, поэтому страница не статическая.
+export const dynamic = 'force-dynamic'
+
+export async function generateMetadata() {
+  const { isEnabled } = await draftMode()
+  const c = await getPageContent('about-page', isEnabled)
+  return { title: c.seoTitle, description: c.seoDescription }
 }
 
 const production = [
@@ -31,10 +37,13 @@ const production = [
   },
 ]
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { isEnabled: isDraft } = await draftMode()
+  const c = await getPageContent('about-page', isDraft)
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
+      {isDraft && <PreviewListener />}
       <Header />
 
       {/* HERO */}
@@ -42,20 +51,19 @@ export default function AboutPage() {
         <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] animate-drift-a rounded-full bg-accent/6 blur-3xl" />
         <div className="relative mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <Tag tone="dark">О компании</Tag>
+            <Tag tone="dark">{c.heroEyebrow}</Tag>
           </Reveal>
           <Reveal delay={100}>
             <h1 className="mt-6 text-4xl leading-tight tracking-tight md:text-5xl lg:text-6xl">
-              Мы делаем двери{' '}
+              {c.heroTitle}{' '}
               <span className="text-accent">
-                защищёнными
+                {c.heroAccent}
               </span>
             </h1>
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-6 max-w-2xl text-lg text-white/70 md:text-xl">
-              FORBSA — российский производитель автоматических порогов. Наша миссия —
-              герметизация каждого дверного проёма: без дыма, шума, пыли, сквозняков и насекомых.
+              {c.heroLead}
             </p>
           </Reveal>
         </div>
@@ -65,15 +73,13 @@ export default function AboutPage() {
       <section className="py-14 md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <SectionHeading title="История и путь развития" />
+            <SectionHeading title={c.historyTitle} />
             <p className="max-w-3xl text-lg text-ink-muted">
-              Мы выросли из производства дверной фурнитуры в полноценного производителя
-              автоматических порогов полного цикла: собственный цех, контроль качества,
-              складская программа и отгрузки по России и СНГ.
+              {c.historyText}
             </p>
-            <p className="mt-4 max-w-3xl text-sm text-ink-muted/70">
-              * Точные даты и вехи истории добавит директор — скелет блока готов к наполнению.
-            </p>
+            {c.historyNote && (
+              <p className="mt-4 max-w-3xl text-sm text-ink-muted/70">{c.historyNote}</p>
+            )}
           </Reveal>
         </div>
       </section>
@@ -82,7 +88,7 @@ export default function AboutPage() {
       <section className="bg-graphite py-14 text-white md:py-14">
         <div className="mx-auto max-w-[1440px] px-6">
           <Reveal>
-            <SectionHeading dark title="Производство" />
+            <SectionHeading dark title={c.productionTitle} />
           </Reveal>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {production.map((item, i) => (
@@ -97,11 +103,11 @@ export default function AboutPage() {
               </Reveal>
             ))}
           </div>
-          <Reveal delay={300}>
-            <p className="mt-6 text-sm text-white/40">
-              * Фото и видео цеха появятся после фотосессии — бюджет согласован.
-            </p>
-          </Reveal>
+          {c.productionNote && (
+            <Reveal delay={300}>
+              <p className="mt-6 text-sm text-white/40">{c.productionNote}</p>
+            </Reveal>
+          )}
         </div>
       </section>
 
@@ -110,12 +116,12 @@ export default function AboutPage() {
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-2xl px-6">
           <Reveal>
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Связаться с нами</h2>
+            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">{c.ctaTitle}</h2>
             <p className="mx-auto mt-3 max-w-xl text-ink-muted">
-              Ответим на вопросы, поможем подобрать модель и подготовим коммерческое предложение.
+              {c.ctaText}
             </p>
             <Button href="/contacts" size="lg" className="mt-8">
-              Связаться с нами
+              {c.ctaButton}
             </Button>
           </Reveal>
         </div>

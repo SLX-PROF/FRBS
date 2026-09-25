@@ -4,6 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { ru } from '@payloadcms/translations/languages/ru'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -18,6 +19,9 @@ import { KbChunks } from './collections/KbChunks'
 import { ChatSessions } from './collections/ChatSessions'
 import { withAudit } from './lib/audit'
 import { CompanyProfile } from './globals/CompanyProfile'
+import { pageGlobals } from './globals/PageGlobals'
+import { reindexProducts } from './lib/ai/kb'
+import { isProductStaff } from './lib/access'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,9 +43,32 @@ export default buildConfig({
       beforeDashboard: ['/components/admin/Welcome#Welcome'],
     },
   },
+  i18n: {
+    supportedLanguages: { ru },
+    fallbackLanguage: 'ru',
+  },
   routes: {
     admin: '/cp-7k2f9x',
   },
+  endpoints: [
+    {
+      // Кнопка «Обновить базу знаний бота» в списке товаров.
+      path: '/kb/reindex',
+      method: 'post',
+      handler: async (req) => {
+        if (!isProductStaff(req.user as Parameters<typeof isProductStaff>[0])) {
+          return Response.json({ error: 'Нет доступа' }, { status: 403 })
+        }
+        try {
+          const count = await reindexProducts(req.payload as Parameters<typeof reindexProducts>[0])
+          return Response.json({ ok: true, count })
+        } catch (err) {
+          req.payload.logger.error({ msg: 'kb reindex (button) failed', err })
+          return Response.json({ error: 'Не удалось обновить базу знаний' }, { status: 500 })
+        }
+      },
+    },
+  ],
   collections: [
     Users,
     Media,
@@ -55,7 +82,7 @@ export default buildConfig({
     KbChunks,
     ChatSessions,
   ],
-  globals: [CompanyProfile],
+  globals: [...pageGlobals, CompanyProfile],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

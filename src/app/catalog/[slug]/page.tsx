@@ -1,3 +1,5 @@
+import { draftMode } from 'next/headers'
+import PreviewListener from '@/components/PreviewListener'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
@@ -16,11 +18,13 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const { isEnabled: isDraft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
   const { docs } = await payload.find({
     collection: 'products',
     where: { slug: { equals: slug } },
     limit: 1,
+    draft: isDraft,
   })
   const product = docs[0]
   if (!product) return { title: 'Товар не найден' }
@@ -39,11 +43,13 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
+  const { isEnabled: isDraft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
   const { docs } = await payload.find({
     collection: 'products',
     where: { slug: { equals: slug } },
     limit: 1,
+    draft: isDraft,
   })
   const product = docs[0]
   if (!product) return notFound()
@@ -63,6 +69,7 @@ export default async function ProductPage({
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
+      {isDraft && <PreviewListener />}
       <Header />
 
       {/* Хлебные крошки */}

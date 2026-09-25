@@ -27,7 +27,7 @@ const widthRanges: { key: WidthRange; label: string; test: (w: number) => boolea
 ]
 
 export default function CatalogClient({ products }: { products: Product[] }) {
-  const [sort, setSort] = useState<'name' | 'width'>('name')
+  const [sort, setSort] = useState<'order' | 'name' | 'width'>('order')
   const [widthRange, setWidthRange] = useState<WidthRange>('all')
 
   const filtered = useMemo(() => {
@@ -54,6 +54,16 @@ export default function CatalogClient({ products }: { products: Product[] }) {
           <div className="flex items-center gap-2">
             <span className="text-sm text-ink-muted">Сортировка:</span>
             <div className="flex gap-1 rounded-xl bg-surface p-1">
+              <button
+                onClick={() => setSort('order')}
+                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                  sort === 'order'
+                    ? 'bg-white text-ink shadow-sm'
+                    : 'text-ink-muted hover:text-ink'
+                }`}
+              >
+                Рекомендуемые
+              </button>
               <button
                 onClick={() => setSort('name')}
                 className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
