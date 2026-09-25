@@ -16,6 +16,8 @@ URL=http://127.0.0.1:3000/api/health
 COMPOSE="docker compose -f Docker-compose.yml"
 
 cd "$DIR" || exit 1
+# Идёт деплой (scripts/deploy.sh): не вмешиваться, иначе сторож поднимет старый web посреди сборки.
+[ -e /run/forbsa-maintenance ] && exit 0
 log() { echo "$(date '+%F %T') $*" >> "$LOG"; }
 
 notify() {
