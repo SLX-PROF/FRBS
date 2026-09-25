@@ -3,7 +3,6 @@ import { MapPinIcon, PhoneIcon, MailIcon } from '@/components/ui/Icons'
 
 const nav = [
   { href: '/catalog', label: 'Каталог' },
-  { href: '/partners', label: 'Для партнёров' },
   { href: '/docs', label: 'Документация' },
   { href: '/about', label: 'О компании' },
   { href: '/contacts', label: 'Контакты' },

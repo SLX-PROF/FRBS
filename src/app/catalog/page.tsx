@@ -65,14 +65,11 @@ export default async function CatalogPage() {
               dark
               center
               title="Не знаете, какая модель подходит?"
-              subtitle="Укажите ширину двери и тип монтажа в калькуляторе — покажем подходящие модели за пару секунд."
+              subtitle="Сообщите ширину двери и тип монтажа — инженер подберёт подходящую модель."
             />
             <div className="flex flex-wrap justify-center gap-3">
-              <Button href="/calculator" size="lg">
-                Подобрать модель →
-              </Button>
-              <Button href="/contacts" variant="ghost" size="lg">
-                Консультация инженера
+              <Button href="/contacts" size="lg">
+                Консультация инженера →
               </Button>
             </div>
           </Reveal>

@@ -15,7 +15,6 @@ import ProductPhotoHover from '@/components/ui/ProductPhotoHover'
 import { getAllProducts } from '@/lib/products'
 import {
   ArchitectIcon,
-  DealerIcon,
   InstallerIcon,
   CheckIcon,
   SteelIcon,
@@ -35,7 +34,7 @@ export async function generateMetadata() {
   const products = await getAllProducts()
   return {
     title: 'FORBSA — автоматические пороги для дверей. Производство от 1 дня',
-    description: `Российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, ${products.length} моделей. Для архитекторов, дилеров и монтажников.`,
+    description: `Российский производитель автоматических дверных порогов. 1 000 000 циклов, сертификат РОСТЕСТ, ${products.length} моделей. Для архитекторов и монтажников.`,
   }
 }
 
@@ -47,14 +46,6 @@ const audience = [
     cta: 'Перейти в документацию',
     href: '/docs',
     Icon: ArchitectIcon,
-  },
-  {
-    role: 'Дилер',
-    title: 'Условия партнёрства',
-    desc: 'Маржинальность, защита территории, маркетинговая поддержка, обучение команды.',
-    cta: 'Стать партнёром',
-    href: '/partners',
-    Icon: DealerIcon,
   },
   {
     role: 'Монтажник',
@@ -121,15 +112,6 @@ export default async function Home() {
                   Смотреть каталог
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </Button>
-                <Button href="/calculator" variant="ghost" size="lg">
-                  Подобрать модель
-                </Button>
-                <Link
-                  href="/partners"
-                  className="text-sm font-semibold text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline"
-                >
-                  Стать дилером →
-                </Link>
               </div>
             </Reveal>
 
@@ -290,7 +272,7 @@ export default async function Home() {
             />
           </Reveal>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2">
             {audience.map((card, i) => (
               <Reveal key={card.role} delay={i * 100}>
                 <Card href={card.href} className="group flex h-full flex-col hover:border-accent/30">

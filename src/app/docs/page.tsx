@@ -242,9 +242,6 @@ export default async function DocsPage() {
               <Button href="/contacts" size="lg">
                 Связаться с инженером →
               </Button>
-              <Button href="/partners" variant="outline" size="lg">
-                Стать дилером
-              </Button>
             </div>
           </Reveal>
         </div>

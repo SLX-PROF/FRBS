@@ -9,8 +9,6 @@ import { useScrollProgress } from '@/lib/useScrollProgress'
 
 const links = [
   { href: '/catalog', label: 'Каталог' },
-  { href: '/calculator', label: 'Подбор' },
-  { href: '/partners', label: 'Для партнёров' },
   { href: '/docs', label: 'Документация' },
   { href: '/about', label: 'О компании' },
   { href: '/contacts', label: 'Контакты' },

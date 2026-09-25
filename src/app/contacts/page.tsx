@@ -5,7 +5,6 @@ import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LeadForm from '@/components/LeadForm'
-import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
@@ -238,29 +237,6 @@ export default async function ContactsPage() {
           <Reveal delay={150}>
             <div className="mx-auto mt-10 max-w-3xl">
               <LeadForm />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* CTA-БЛОК */}
-      <section className="bg-surface py-14">
-        <div className="mx-auto max-w-4xl px-6">
-          <Reveal>
-            <div className="rounded-panel border border-line bg-white p-8 text-center shadow-panel md:p-12">
-              <h2 className="text-2xl font-semibold md:text-3xl">
-                Хотите стать дилером?
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-ink-muted">
-                Посмотрите условия партнёрства и оставьте заявку — обсудим
-                сотрудничество.
-              </p>
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <Button href="/partners">Условия партнёрства →</Button>
-                <Button href="/docs" variant="outline">
-                  Документация
-                </Button>
-              </div>
             </div>
           </Reveal>
         </div>
