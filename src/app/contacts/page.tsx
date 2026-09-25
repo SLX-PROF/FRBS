@@ -1,5 +1,3 @@
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
 import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
@@ -10,32 +8,13 @@ import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { MapPinIcon, PhoneIcon, MailIcon, MessageIcon } from '@/components/ui/Icons'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'Контакты FORBSA — офис и производство в Москве',
   description:
     'Свяжитесь с FORBSA: офис и производство в Москве. Телефон, email, форма обратной связи, реквизиты ООО «Форбса». Отвечаем в течение рабочего дня.',
 }
 
-export default async function ContactsPage() {
-  const payload = await getPayload({ config: configPromise })
-  const profile = await payload.findGlobal({ slug: 'company-profile' }).catch(() => null)
-
-  const requisites = [
-    { label: 'Наименование', value: profile?.legalName },
-    {
-      label: 'ИНН / КПП',
-      value: [profile?.inn, profile?.kpp].filter(Boolean).join(' / ') || undefined,
-    },
-    { label: 'ОГРН', value: profile?.ogrn },
-    { label: 'Юр. адрес', value: profile?.address },
-    { label: 'Р/с', value: profile?.account },
-    { label: 'Корр. счёт', value: profile?.corrAccount },
-    { label: 'Банк', value: profile?.bankName },
-    { label: 'БИК', value: profile?.bik },
-  ].filter((item): item is { label: string; value: string } => Boolean(item.value))
-
+export default function ContactsPage() {
   return (
     <main className="min-h-screen bg-surface text-ink">
       <ScrollProgress />
@@ -153,34 +132,10 @@ export default async function ContactsPage() {
         </div>
       </section>
 
-      {/* РЕКВИЗИТЫ + РЕЖИМ РАБОТЫ */}
+      {/* РЕЖИМ РАБОТЫ */}
       <section className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-[1440px] px-6">
-          <div className="grid gap-8 md:grid-cols-2">
-            {/* РЕКВИЗИТЫ */}
-            <Reveal>
-              <div className="flex h-full flex-col rounded-panel border border-white/10 bg-white/5 p-8 backdrop-blur">
-                <Tag tone="dark">Юридическая информация</Tag>
-                <h2 className="mt-4 text-2xl font-semibold">
-                  Реквизиты
-                </h2>
-                <div className="mt-6 space-y-3 text-sm">
-                  {requisites.length === 0 ? (
-                    <p className="text-white/50">
-                      Реквизиты ещё не заполнены — добавьте их в админке, раздел «Реквизиты компании».
-                    </p>
-                  ) : (
-                    requisites.map((item) => (
-                      <div key={item.label} className="flex items-start justify-between gap-4 border-b border-white/10 pb-2">
-                        <span className="flex-shrink-0 text-white/50">{item.label}</span>
-                        <span className="min-w-0 break-words text-right font-medium">{item.value}</span>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </Reveal>
-
+          <div className="mx-auto max-w-2xl">
             {/* РЕЖИМ РАБОТЫ */}
             <Reveal delay={150}>
               <div className="flex h-full flex-col rounded-panel border border-white/10 bg-white/5 p-8 backdrop-blur">

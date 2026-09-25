@@ -4,7 +4,6 @@ import Reveal from '@/components/motion/Reveal'
 import ScrollProgress from '@/components/motion/ScrollProgress'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import LeadMagnetForm from '@/components/LeadMagnetForm'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
 import { BookIcon, CertificateIcon, WrenchIcon, ScaleIcon } from '@/components/ui/Icons'
@@ -199,42 +198,14 @@ export default async function DocsPage() {
         </div>
       </section>
 
-      {/* ЛИД-МАГНИТ: АЛЬБОМ ПО ПОДПИСКЕ */}
-      <section className="bg-graphite py-14 text-white">
-        <div className="mx-auto max-w-4xl px-6">
-          <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-8 md:p-12">
-              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 animate-drift-a rounded-full bg-accent/6 blur-3xl" />
-
-              <div className="relative">
-                <Tag>Лид-магнит для проектировщиков</Tag>
-                <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
-                  Получите Альбом ТТР + BIM-модели на email
-                </h2>
-                <p className="mt-3 max-w-xl text-white/70">
-                  Оставьте рабочий email — пришлём полную версию альбома,
-                  BIM-семейства и приглашение на технический вебинар.
-                </p>
-
-                <LeadMagnetForm />
-
-                <p className="mt-3 text-xs text-white/40">
-                  Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* CTA-БЛОК */}
-      <section className="py-14">
+      <section className="bg-graphite py-14 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
               Нужна консультация инженера?
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-ink-muted">
+            <p className="mx-auto mt-3 max-w-xl text-white/70">
               Поможем подобрать модель, подготовим узел под ваш проект,
               проконсультируем по госэкспертизе.
             </p>

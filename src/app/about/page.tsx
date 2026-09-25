@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
 import SectionHeading from '@/components/ui/SectionHeading'
-import { FactoryIcon, ShieldIcon, RulerIcon, CertificateIcon } from '@/components/ui/Icons'
+import { FactoryIcon, ShieldIcon, RulerIcon } from '@/components/ui/Icons'
 
 export const metadata = {
   title: 'О компании — FORBSA',
@@ -29,14 +29,6 @@ const production = [
     desc: 'Пороги любой длины в производимом диапазоне, укорочение на 220 мм, регулировка выпада до 18 мм.',
     Icon: RulerIcon,
   },
-]
-
-const certs = [
-  { title: 'Сертификат РОСТЕСТ', text: 'Продукция сертифицирована и соответствует требованиям РФ.' },
-  { title: 'Протокол 1 000 000 циклов', text: 'Механизм испытан на 1 000 000 циклов открывания-закрывания.' },
-  { title: 'СП 51.13330.2011', text: 'Защита от шума: звукоизоляция до 44-48 дБ.' },
-  { title: 'СП 50.13330.2012', text: 'Тепловая защита: исключение продувания через нижний зазор.' },
-  { title: 'ГОСТ 31173-2016', text: 'Блоки дверные металлические: классы воздухо- и водопроницаемости.' },
 ]
 
 export default function AboutPage() {
@@ -113,46 +105,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* СЕРТИФИКАТЫ */}
-      <section className="py-14 md:py-14">
-        <div className="mx-auto max-w-[1440px] px-6">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Доверие"
-              title="Сертификаты и испытания"
-              subtitle="Подтверждённое качество и соответствие российским стандартам"
-            />
-          </Reveal>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {certs.map((c, i) => (
-              <Reveal key={c.title} delay={i * 60}>
-                <div className="flex h-full items-start gap-4 rounded-panel border-l-4 border-accent bg-white p-5 shadow-panel">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10 p-2 text-accent">
-                    <CertificateIcon />
-                  </div>
-                  <div>
-                    <p className="font-bold text-ink">{c.title}</p>
-                    <p className="mt-1 text-sm text-ink-muted">{c.text}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal delay={200}>
-            <Button href="/docs" className="mt-8">
-              Скачать сертификаты
-            </Button>
-          </Reveal>
-        </div>
-      </section>
-
       {/* CTA */}
-      <section className="relative overflow-hidden bg-graphite py-14 text-center text-white">
+      <section className="relative overflow-hidden py-14 text-center">
         <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 animate-drift-a rounded-full bg-accent/4 blur-3xl" />
         <div className="relative mx-auto max-w-2xl px-6">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Связаться с нами</h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/70">
+            <p className="mx-auto mt-3 max-w-xl text-ink-muted">
               Ответим на вопросы, поможем подобрать модель и подготовим коммерческое предложение.
             </p>
             <Button href="/contacts" size="lg" className="mt-8">
